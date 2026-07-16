@@ -1,0 +1,61 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+
+export default function FooterTicker() {
+  const t = useTranslations("Footer");
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(
+        new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Kuwait",
+        }).format(new Date())
+      );
+    };
+
+    updateTime();
+
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const items = [
+    `◆ ${t("ticker.live")} • ${time}`,
+    `◆ ${t("ticker.location")} • 47°C`,
+    `◆ ${t("ticker.announcement")}`,
+    `◆ ${t("ticker.location")} • 47°C`,
+    `◆ ${t("ticker.announcement")}`,
+  ];
+
+  return (
+    <div className="overflow-hidden border-b border-black/10 bg-[#F8ECA3]">
+      <motion.div
+        className="flex w-max items-center gap-16 py-3"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          duration: 35,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop",
+        }}
+      >
+        {[...items, ...items, ...items, ...items].map((item, index) => (
+          <span
+            key={index}
+            className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[3px] text-[#31451B] lg:text-xs"
+          >
+            {item}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}

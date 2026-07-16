@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/Instrument-Serif-400-normal-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/Instrument-Serif-400-italic-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

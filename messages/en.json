@@ -1,0 +1,50 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "menu": "Menu",
+    "story": "Our Story",
+    "locations": "Locations",
+    "contact": "Contact",
+    "viewMenu": "View Menu"
+  },
+
+  "Footer": {
+    "headlineLine1": "See you",
+    "headlineLine2": "at the table.",
+
+    "visit": "Visit",
+    "findUs": "Find Us",
+    "follow": "Follow",
+    "allBranches": "All Branches",
+
+    "home": "Home",
+    "menu": "Menu",
+    "story": "Our Story",
+    "locations": "Locations",
+    "contact": "Contact",
+
+    "slogan": "Your tropical dreams, served daily.",
+
+    "branches": {
+      "kuwaitCity": "Kuwait City",
+      "jabriya": "Jabriya",
+      "alQurain": "Al Qurain",
+      "aswaqQurain": "Aswaq Qurain",
+      "adailiya": "Adailiya"
+    },
+
+    "social": {
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "whatsapp": "WhatsApp"
+    },
+
+    "ticker": {
+      "live": "LIVE",
+      "location": "KUWAIT",
+      "announcement": "DRINK IT COLD — ICED ESPRESSO, PECAN SOFT SERVE"
+    },
+
+    "copyright": "© 2026 ANANAS"
+  }
+}

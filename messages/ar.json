@@ -1,0 +1,50 @@
+{
+  "Navbar": {
+    "home": "الرئيسية",
+    "menu": "القائمة",
+    "story": "قصتنا",
+    "locations": "الفروع",
+    "contact": "تواصل معنا",
+    "viewMenu": "تصفح القائمة"
+  },
+
+  "Footer": {
+    "headlineLine1": "نشوفكم",
+    "headlineLine2": "قريب.",
+
+    "visit": "تصفح",
+    "findUs": "فروعنا",
+    "follow": "تابعنا",
+    "allBranches": "جميع الفروع",
+
+    "home": "الرئيسية",
+    "menu": "القائمة",
+    "story": "قصتنا",
+    "locations": "الفروع",
+    "contact": "تواصل معنا",
+
+    "slogan": "نكهات استوائية تُقدّم يومياً.",
+
+    "branches": {
+      "kuwaitCity": "مدينة الكويت",
+      "jabriya": "الجابرية",
+      "alQurain": "القرين",
+      "aswaqQurain": "أسواق القرين",
+      "adailiya": "العديلية"
+    },
+
+    "social": {
+      "instagram": "إنستغرام",
+      "tiktok": "تيك توك",
+      "whatsapp": "واتساب"
+    },
+
+    "ticker": {
+      "live": "مباشر",
+      "location": "الكويت",
+      "announcement": "استمتعوا بالقهوة المثلجة والآيس كريم يومياً"
+    },
+
+    "copyright": "© ٢٠٢٦ أناناس"
+  }
+}
