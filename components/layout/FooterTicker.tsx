@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function FooterTicker() {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const t = useTranslations("Footer");
   const [time, setTime] = useState("");
 
@@ -39,7 +41,7 @@ export default function FooterTicker() {
     <div className="overflow-hidden border-b border-black/10 bg-[#F8ECA3]">
       <motion.div
         className="flex w-max items-center gap-16 py-3"
-        animate={{ x: ["0%", "-50%"] }}
+        animate={{ x: isRtl ? ["0%", "50%"] : ["0%", "-50%"] }}
         transition={{
           duration: 35,
           ease: "linear",
