@@ -25,7 +25,7 @@ export default function MobileNavbar() {
       <div className="flex h-20 items-center justify-between px-5 lg:hidden">
 
         <button onClick={() => setOpen(true)} className="text-black">
-          <Menu size={28} />
+          <Menu size={28} color="black" className="fill-black stroke-black" />
         </button>
 
         <Link href="/">
