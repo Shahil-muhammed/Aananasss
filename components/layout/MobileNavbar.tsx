@@ -24,8 +24,13 @@ export default function MobileNavbar() {
       {/* Mobile Header */}
       <div className="flex h-20 items-center justify-between px-5 lg:hidden">
 
-        <button onClick={() => setOpen(true)} className="text-black">
-          <Menu size={28} color="black" className="fill-black stroke-black" />
+        {/* Cleaned up classes and attributes on the button and icon */}
+        <button 
+          onClick={() => setOpen(true)} 
+          className="text-black flex items-center justify-center p-1"
+          aria-label="Open Menu"
+        >
+          <Menu size={28} className="stroke-current" />
         </button>
 
         <Link href="/">
@@ -56,8 +61,8 @@ export default function MobileNavbar() {
             height={45}
           />
 
-          <button onClick={() => setOpen(false)}>
-            <X size={30} />
+          <button onClick={() => setOpen(false)} className="text-black">
+            <X size={30} className="stroke-current" />
           </button>
 
         </div>
