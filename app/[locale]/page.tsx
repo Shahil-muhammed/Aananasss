@@ -1,4 +1,5 @@
 import Hero from "@/components/home/Hero";
+import Branches from"@/components/home/Branches";
 import { heroData } from "@/data/hero";
 
 interface HomePageProps {
@@ -16,6 +17,7 @@ export default async function HomePage({ params }: HomePageProps) {
         data={heroData}
         locale={locale}
       />
+      <Branches />
     </>
   );
 }
