@@ -17,7 +17,7 @@ export default async function HomePage({ params }: HomePageProps) {
         data={heroData}
         locale={locale}
       />
-      <Branches />
+      {/* <Branches /> */}
     </>
   );
 }
