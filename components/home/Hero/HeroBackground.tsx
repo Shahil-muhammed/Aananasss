@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { HeroProps } from "@/types/hero";
+import { HeroProps } from "./hero.types";
 
 interface HeroBackgroundProps {
   data: HeroProps;
