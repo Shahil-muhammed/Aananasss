@@ -38,10 +38,12 @@ export default function FooterTicker() {
   ];
 
   return (
-    <div className="overflow-hidden border-b border-black/10 bg-[#F8ECA3]">
+    // We force dir="ltr" on the layout container so Framer Motion's X axis math 
+    // stays consistent, but we give the text elements dir="rtl" if Arabic.
+    <div className="overflow-hidden border-b border-black/10 bg-[#F8ECA3]" dir="ltr">
       <motion.div
         className="flex w-max items-center gap-16 py-3"
-        animate={{ x: isRtl ? ["0%", "50%"] : ["0%", "-50%"] }}
+        animate={{ x: isRtl ? ["-50%", "0%"] : ["0%", "-50%"] }}
         transition={{
           duration: 35,
           ease: "linear",
@@ -49,9 +51,12 @@ export default function FooterTicker() {
           repeatType: "loop",
         }}
       >
+        {/* Multiplying by 4 is fine, but we only need 2 groups for a -50% loop. 
+            Keeping your array multiplication logic intact. */}
         {[...items, ...items, ...items, ...items].map((item, index) => (
           <span
             key={index}
+            dir={isRtl ? "rtl" : "ltr"}
             className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[3px] text-[#31451B] lg:text-xs"
           >
             {item}
