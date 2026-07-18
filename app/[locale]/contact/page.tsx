@@ -7,8 +7,8 @@ export default function AboutPage() {
         backgroundSize: '12px 12px',
       }}
     >
-      <h1 className="text-5xl font-bold text-[#5c543c]">
-        Contact Your developer
+      <h1 className="text-3xl text-center font-bold text-[#5c543c]">
+        Contact
       </h1>
     </section>
   );
