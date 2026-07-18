@@ -8,7 +8,7 @@ export default function AboutPage() {
       }}
     >
       <h1 className="text-5xl font-bold text-[#5c543c]">
-        Contact
+        Contact Your Sole
       </h1>
     </section>
   );
