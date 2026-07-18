@@ -14,17 +14,25 @@ export default function FeaturedProducts() {
   const data = featuredProductsData;
 
   return (
-    <section className="relative overflow-hidden bg-[#F3ECD8] py-16 sm:py-20 lg:py-32">
-      {/* Grain Texture - matching the background of image_0.png */}
+    <section 
+      className="relative overflow-hidden bg-[#F3ECD8] py-16 sm:py-20 lg:py-32"
+      dir={isArabic ? "rtl" : "ltr"}
+    >
+      {/* IDENTICAL BACKGROUND MICRO-GRID */}
       <div
         className="
           pointer-events-none
           absolute
           inset-0
-          opacity-[0.03]
-          [background-image:radial-gradient(#000_0.7px,transparent_0.7px)]
-          [background-size:12px_12px]
+          opacity-[0.12]
         "
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #000 0.5px, transparent 0.5px),
+            linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
+          `,
+          backgroundSize: '6px 6px'
+        }}
       />
 
       <div className="relative z-10 mx-auto w-full max-w-[1900px] px-8 lg:px-9">
@@ -78,10 +86,10 @@ export default function FeaturedProducts() {
               key={product.id}
               className="group overflow-hidden"
             >
-              {/* Card image with specific h-[560px] */}
+              {/* Card image with specific heights */}
               <div className="relative h-[280px] overflow-hidden sm:h-[340px] lg:h-[400px]">
                 <Image
-                  src={product.image} // <--- Loads generated images 1-4
+                  src={product.image}
                   alt={isArabic ? product.titleAr : product.titleEn}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -90,8 +98,8 @@ export default function FeaturedProducts() {
                 {/* Gradient Overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                {/* Text content matching image_0.png layout */}
-                <div className="absolute bottom-6 left-6 right-6 text-white">
+                {/* Text content */}
+                <div className={`absolute bottom-6 left-6 right-6 text-white ${isArabic ? "text-right" : "text-left"}`}>
                   <p className="mb-2 text-[11px] uppercase tracking-[4px] opacity-80">
                     {isArabic ? product.categoryAr : product.categoryEn}
                   </p>
