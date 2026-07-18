@@ -3,7 +3,7 @@ import FeaturedProducts from "@/components/home/FeaturedProducts";
 import ProductTicker from "@/components/home/ProductTicker";
 import QuoteSection from "@/components/home/QuoteSection";
 import MenuIntro from "@/components/home/MenuIntro";
-
+import Branches from "@/components/home/Branches";
 
 import { heroData } from "@/data/hero";
 
@@ -26,8 +26,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <FeaturedProducts />
       <QuoteSection />
       <MenuIntro locale={locale} />
-
-      
+      <Branches />
     </>
   );
 }
