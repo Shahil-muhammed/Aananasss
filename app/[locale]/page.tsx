@@ -25,7 +25,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <ProductTicker />
       <FeaturedProducts />
       <QuoteSection />
-      <MenuIntro />
+      <MenuIntro locale={locale} />
 
       
     </>
