@@ -1,15 +1,9 @@
-export default function AboutPage() {
+import Hero from "@/components/menu/Hero";
+
+export default function MenuPage() {
   return (
-    <section 
-      className="min-h-screen w-full flex items-center justify-center bg-[#f2ebd4]"
-      style={{
-        backgroundImage: 'radial-gradient(#d3c9a8 1px, transparent 1px)',
-        backgroundSize: '12px 12px',
-      }}
-    >
-      <h1 className="text-5xl font-bold text-[#5c543c]">
-        Menu
-      </h1>
-    </section>
+    <>
+      <Hero />
+    </>
   );
 }
