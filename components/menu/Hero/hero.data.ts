@@ -10,7 +10,9 @@ export const heroData: MenuHeroData = {
   titleLine1Ar: "يومك،",
   titleLine2Ar: "مغطى بالكامل.",
 
-  mediaType: "image", // image | video
+  display: "background",   // <-- Add this
+
+  mediaType: "image",
 
   mediaUrl: "/images/menu/hero.webp",
 
