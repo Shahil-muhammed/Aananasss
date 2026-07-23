@@ -1,6 +1,7 @@
 import Hero from "@/components/story/Hero";
 import { StorySection } from "@/components/story/StorySection";
 import { storySections } from "@/components/story/StorySection/storySection.data";
+import Values from "@/components/story/Values";
 
 interface OurStoryPageProps {
   params: Promise<{
@@ -23,6 +24,8 @@ export default async function OurStoryPage({
           section={section}
         />
       ))}
+
+      <Values />
     </>
   );
 }
