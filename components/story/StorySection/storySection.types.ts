@@ -15,5 +15,5 @@ export interface StorySectionData {
 
   titleColor: string;
 
-  reverse: boolean;
+  reverse?: boolean;
 }

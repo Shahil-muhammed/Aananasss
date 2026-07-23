@@ -1,4 +1,6 @@
 import Hero from "@/components/story/Hero";
+import { StorySection } from "@/components/story/StorySection";
+import { storySections } from "@/components/story/StorySection/storySection.data";
 
 interface OurStoryPageProps {
   params: Promise<{
@@ -11,5 +13,16 @@ export default async function OurStoryPage({
 }: OurStoryPageProps) {
   await params;
 
-  return <Hero />;
+  return (
+    <>
+      <Hero />
+
+      {storySections.map((section) => (
+        <StorySection
+          key={section.id}
+          section={section}
+        />
+      ))}
+    </>
+  );
 }
