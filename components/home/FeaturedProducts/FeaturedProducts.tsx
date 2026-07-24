@@ -15,7 +15,7 @@ export default function FeaturedProducts() {
 
   return (
     <section 
-      className="relative overflow-hidden bg-[#F3ECD8] py-16 sm:py-20 lg:py-32"
+      className="relative overflow-hidden bg-[#F3ECD8] py-12 sm:py-20 lg:py-32"
       dir={isArabic ? "rtl" : "ltr"}
     >
       {/* IDENTICAL BACKGROUND MICRO-GRID */}
@@ -35,18 +35,18 @@ export default function FeaturedProducts() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1900px] px-8 lg:px-9">
+      <div className="relative z-10 mx-auto w-full max-w-[1900px] px-4 sm:px-8 lg:px-9">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className={`mb-10 lg:mb-16 ${
+          className={`mb-8 sm:mb-10 lg:mb-16 ${
             isArabic ? "text-right" : "text-left"
           }`}
         >
-          <p className="mb-4 text-[10px] uppercase tracking-[6px] text-[#C77C3E]">
+          <p className="mb-2 sm:mb-4 text-[9px] sm:text-[10px] uppercase tracking-[4px] sm:tracking-[6px] text-[#C77C3E]">
             {isArabic ? data.sectionLabelAr : data.sectionLabelEn}
           </p>
 
@@ -56,7 +56,7 @@ export default function FeaturedProducts() {
               font-serif
               leading-[0.95]
               text-[#202020]
-              text-4xl
+              text-3xl
               sm:text-5xl
               lg:text-7xl
             "
@@ -65,7 +65,7 @@ export default function FeaturedProducts() {
           </h2>
         </motion.div>
 
-        {/* Product Cards Grid (4 Columns) */}
+        {/* Product Cards Grid (2 Columns Mobile, 4 Columns Desktop) */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -73,10 +73,10 @@ export default function FeaturedProducts() {
           viewport={{ once: true }}
           className="
             grid
-            grid-cols-1
-            md:grid-cols-2
+            grid-cols-2
             lg:grid-cols-4
-            gap-6
+            gap-3
+            sm:gap-6
             md:gap-8
           "
         >
@@ -86,8 +86,8 @@ export default function FeaturedProducts() {
               key={product.id}
               className="group overflow-hidden"
             >
-              {/* Card image with specific heights */}
-              <div className="relative h-[280px] overflow-hidden sm:h-[340px] lg:h-[400px]">
+              {/* Card image with responsive heights */}
+              <div className="relative h-[220px] sm:h-[340px] lg:h-[400px] w-full overflow-hidden">
                 <Image
                   src={product.image}
                   alt={isArabic ? product.titleAr : product.titleEn}
@@ -96,15 +96,15 @@ export default function FeaturedProducts() {
                 />
 
                 {/* Gradient Overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Text content */}
-                <div className={`absolute bottom-6 left-6 right-6 text-white ${isArabic ? "text-right" : "text-left"}`}>
-                  <p className="mb-2 text-[11px] uppercase tracking-[4px] opacity-80">
+                <div className={`absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 text-white ${isArabic ? "text-right" : "text-left"}`}>
+                  <p className="mb-1 text-[8px] sm:text-[11px] uppercase tracking-[2px] sm:tracking-[4px] opacity-80 truncate">
                     {isArabic ? product.categoryAr : product.categoryEn}
                   </p>
 
-                  <h3 className="font-serif text-[42px] leading-none">
+                  <h3 className="font-serif text-2xl sm:text-3xl lg:text-[42px] leading-tight sm:leading-none">
                     {isArabic ? product.titleAr : product.titleEn}
                   </h3>
                 </div>

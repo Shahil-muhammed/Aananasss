@@ -1,15 +1,21 @@
-export default function AboutPage() {
+import Hero from "@/components/locations/Hero";
+import Locations from "@/components/locations/Locations";
+
+interface LocationsPageProps {
+  params: Promise<{
+    locale: "en" | "ar";
+  }>;
+}
+
+export default async function LocationsPage({
+  params,
+}: LocationsPageProps) {
+  await params;
+
   return (
-    <section 
-      className="min-h-screen w-full flex items-center justify-center bg-[#f2ebd4]"
-      style={{
-        backgroundImage: 'radial-gradient(#d3c9a8 1px, transparent 1px)',
-        backgroundSize: '12px 12px',
-      }}
-    >
-      <h1 className="text-5xl font-bold text-[#5c543c]">
-        Locations
-      </h1>
-    </section>
+    <>
+      <Hero />
+      <Locations />
+    </>
   );
 }
