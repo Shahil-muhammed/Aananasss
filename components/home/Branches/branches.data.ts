@@ -20,7 +20,7 @@ export const branchesData: BranchesData = {
     locationEn: "Salhiya St, next to SimSim & Mana",
     locationAr: "شارع الصالحية، بجوار سمسم ومانا",
     image: "/images/branches/store1.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ export const branchesData: BranchesData = {
     locationEn: "Building 180, 105 St, Jabriya",
     locationAr: "مبنى ١٨٠، شارع ١٠٥، الجابرية",
     image: "/images/branches/store2.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ export const branchesData: BranchesData = {
     locationEn: "Salwa Walk, Block 6",
     locationAr: "سالوا ووك، قطعة ٦",
     image: "/images/branches/store3.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ export const branchesData: BranchesData = {
     locationEn: "Address coming soon",
     locationAr: "العنوان قريباً",
     image: "/images/branches/store4.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ export const branchesData: BranchesData = {
     locationEn: "Block 4, Avenue 4",
     locationAr: "قطعة ٤، شارع ٤",
     image: "/images/branches/store5.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ export const branchesData: BranchesData = {
     locationEn: "Address coming soon",
     locationAr: "العنوان قريباً",
     image: "/images/branches/store6.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 7,
@@ -74,7 +74,7 @@ export const branchesData: BranchesData = {
     locationEn: "Murouj Complex",
     locationAr: "مجمع المروج",
     image: "/images/branches/store7.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 8,
@@ -83,7 +83,7 @@ export const branchesData: BranchesData = {
     locationEn: "Yarmouk Club",
     locationAr: "نادي اليرموك",
     image: "/images/branches/store8.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 9,
@@ -92,7 +92,7 @@ export const branchesData: BranchesData = {
     locationEn: "Next to Messilah Beach Hotel",
     locationAr: "بجوار فندق المسيلة بيتش",
     image: "/images/branches/store9.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 10,
@@ -101,7 +101,7 @@ export const branchesData: BranchesData = {
     locationEn: "Al Ad'ami, South Kuwait",
     locationAr: "العدامي، جنوب الكويت",
     image: "/images/branches/store10.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 11,
@@ -110,7 +110,7 @@ export const branchesData: BranchesData = {
     locationEn: "Address coming soon",
     locationAr: "العنوان قريباً",
     image: "/images/branches/store11.webp",
-    href: "/locations",
+    href: "/locations/",
   },
   {
     id: 12,
@@ -119,7 +119,7 @@ export const branchesData: BranchesData = {
     locationEn: "The Avenues Mall",
     locationAr: "مجمع الأفنيوز",
     image: "/images/branches/store12.webp",
-    href: "/locations",
+    href: "/locations/",
   },
 ],
 };

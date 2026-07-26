@@ -5,16 +5,18 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 
-// Use the updated data file defined above
-import { featuredProductsData } from "./featured.data";
+import { FeaturedProductsData } from "./featured.types";
 
-export default function FeaturedProducts() {
+interface Props {
+  data: FeaturedProductsData;
+}
+
+export default function FeaturedProducts({ data }: Props) {
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const data = featuredProductsData;
 
   return (
-    <section 
+    <section
       className="relative overflow-hidden bg-[#F3ECD8] py-12 sm:py-20 lg:py-32"
       dir={isArabic ? "rtl" : "ltr"}
     >
@@ -31,7 +33,7 @@ export default function FeaturedProducts() {
             linear-gradient(to right, #000 0.5px, transparent 0.5px),
             linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
           `,
-          backgroundSize: '6px 6px'
+          backgroundSize: "6px 6px",
         }}
       />
 
@@ -65,7 +67,7 @@ export default function FeaturedProducts() {
           </h2>
         </motion.div>
 
-        {/* Product Cards Grid (2 Columns Mobile, 4 Columns Desktop) */}
+        {/* Product Cards Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -86,7 +88,6 @@ export default function FeaturedProducts() {
               key={product.id}
               className="group overflow-hidden"
             >
-              {/* Card image with responsive heights */}
               <div className="relative h-[220px] sm:h-[340px] lg:h-[400px] w-full overflow-hidden">
                 <Image
                   src={product.image}
@@ -95,11 +96,13 @@ export default function FeaturedProducts() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
-                {/* Gradient Overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                {/* Text content */}
-                <div className={`absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 text-white ${isArabic ? "text-right" : "text-left"}`}>
+                <div
+                  className={`absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 text-white ${
+                    isArabic ? "text-right" : "text-left"
+                  }`}
+                >
                   <p className="mb-1 text-[8px] sm:text-[11px] uppercase tracking-[2px] sm:tracking-[4px] opacity-80 truncate">
                     {isArabic ? product.categoryAr : product.categoryEn}
                   </p>
