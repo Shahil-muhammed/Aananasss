@@ -3,17 +3,19 @@
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 
-import { quoteSectionData } from "./quote.data";
+import { QuoteSectionData } from "./quote.types";
 
-export default function QuoteSection() {
+interface Props {
+  data: QuoteSectionData;
+}
+
+export default function QuoteSection({ data }: Props) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
-  const data = quoteSectionData;
-
   return (
-    <section 
-      className="relative overflow-hidden bg-[#F3ECD8] py-16 lg:py-24" // REDUCED HEIGHT VERTICALLY
+    <section
+      className="relative overflow-hidden bg-[#F3ECD8] py-16 lg:py-24"
       dir={isArabic ? "rtl" : "ltr"}
     >
       {/* IDENTICAL BACKGROUND MICRO-GRID */}
@@ -29,20 +31,20 @@ export default function QuoteSection() {
             linear-gradient(to right, #000 0.5px, transparent 0.5px),
             linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
           `,
-          backgroundSize: '6px 6px'
+          backgroundSize: "6px 6px",
         }}
       />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-8 lg:px-16">
         <div className="grid items-start gap-12 lg:grid-cols-[180px_1fr]">
-          
+
           {/* Side Notes */}
           <motion.div
             initial={{ opacity: 0, x: isArabic ? 20 : -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="pt-2 lg:pt-3" // REDUCED OFFSET TO ALIGN TOP EDGE BETTER WITH TEXT
+            className="pt-2 lg:pt-3"
           >
             <p className="whitespace-pre-line text-[10px] uppercase leading-[1.8] tracking-[3px] text-[#505050]">
               {isArabic ? data.labelAr : data.labelEn}
@@ -76,13 +78,21 @@ export default function QuoteSection() {
                 lg:text-[54px]
               "
             >
-              <span className={`text-[#DD9948] font-serif inline-block select-none ${isArabic ? "ml-3" : "mr-2"}`}>
+              <span
+                className={`text-[#DD9948] font-serif inline-block select-none ${
+                  isArabic ? "ml-3" : "mr-2"
+                }`}
+              >
                 {isArabic ? "«" : "“"}
               </span>
-              
+
               {isArabic ? data.quoteAr : data.quoteEn}
-              
-              <span className={`text-[#DD9948] font-serif inline-block select-none ${isArabic ? "mr-3" : "ml-2"}`}>
+
+              <span
+                className={`text-[#DD9948] font-serif inline-block select-none ${
+                  isArabic ? "mr-3" : "ml-2"
+                }`}
+              >
                 {isArabic ? "»" : "”"}
               </span>
             </h2>
@@ -90,7 +100,8 @@ export default function QuoteSection() {
             {/* Footer */}
             <p
               className="
-                mt-8 lg:mt-10 // SLIGHTLY SNUGGER FOOTER GAP
+                mt-8
+                lg:mt-10
                 text-[10px]
                 uppercase
                 tracking-[3px]
@@ -107,4 +118,3 @@ export default function QuoteSection() {
     </section>
   );
 }
-
