@@ -14,18 +14,20 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className="flex min-h-screen flex-col overflow-x-hidden bg-white">
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
+    <NextIntlClientProvider messages={messages}>
+      <div
+        lang={locale}
+        dir={locale === "ar" ? "rtl" : "ltr"}
+        className="flex min-h-screen flex-col overflow-x-hidden bg-white"
+      >
+        <Navbar />
 
-          <main className="flex-1">
-            {children}
-          </main>
+        <main className="flex-1">
+          {children}
+        </main>
 
-          <Footer />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }
