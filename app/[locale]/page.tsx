@@ -9,6 +9,8 @@ import { getHero } from "@/lib/hero/hero";
 import { getFeaturedProducts } from "@/lib/hero/featured";
 import { getProductTicker } from "@/lib/hero/product-ticker";
 import { getQuoteSection } from "@/lib/hero/quote";
+import { getMenuIntro } from "@/lib/hero/menu-intro";
+import { getBranches } from "@/lib/hero/branches";
 
 interface HomePageProps {
   params: Promise<{
@@ -23,6 +25,8 @@ export default async function HomePage({ params }: HomePageProps) {
   const featuredProductsData = await getFeaturedProducts();
   const productTickerData = await getProductTicker();
   const quoteData = await getQuoteSection();
+  const menuIntroData = await getMenuIntro();
+  const branchesData = await getBranches();
 
   return (
     <>
@@ -43,8 +47,14 @@ export default async function HomePage({ params }: HomePageProps) {
         data={quoteData}
       />
 
-      <MenuIntro locale={locale} />
-      <Branches />
+      <MenuIntro
+        locale={locale}
+        data={menuIntroData}
+      />
+
+      <Branches
+        data={branchesData}
+      />
     </>
   );
 }

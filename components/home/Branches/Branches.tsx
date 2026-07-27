@@ -7,12 +7,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 
-import { branchesData } from "./branches.data";
+import { BranchesData } from "./branches.types";
 
-export default function Branches() {
+  interface BranchesProps {
+    data: BranchesData;
+  }
+
+  export default function Branches({ data }: BranchesProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
-  const data = branchesData;
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
