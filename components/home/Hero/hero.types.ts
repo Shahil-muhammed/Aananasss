@@ -6,6 +6,8 @@ export interface HeroButton {
 }
 
 export interface HeroProps {
+  id: number;
+
   mediaType: "image" | "video";
   mediaUrl: string;
   mediaAlt?: string;

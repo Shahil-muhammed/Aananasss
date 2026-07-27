@@ -13,9 +13,16 @@ export async function getHero(): Promise<HeroProps> {
     throw new Error("Failed to fetch Hero data.");
   }
 
+  // Convert storage path to public URL
+  const { data: image } = supabase.storage
+    .from("website-assets")
+    .getPublicUrl(data.media_url);
+
   return {
+    id: data.id,
+
     mediaType: data.media_type,
-    mediaUrl: data.media_url,
+    mediaUrl: image.publicUrl,
     mediaAlt: data.media_alt,
 
     overlay: data.overlay,
