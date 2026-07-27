@@ -9,6 +9,7 @@ export interface HeroProps {
   id: number;
 
   mediaType: "image" | "video";
+  mediaPath: string;
   mediaUrl: string;
   mediaAlt?: string;
 
