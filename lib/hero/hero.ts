@@ -22,7 +22,8 @@ export async function getHero(): Promise<HeroProps> {
     id: data.id,
 
     mediaType: data.media_type,
-    mediaUrl: image.publicUrl,
+    mediaPath: data.media_url, // Original relative path saved in Supabase column
+    mediaUrl: image.publicUrl, // Resolved absolute public URL for display
     mediaAlt: data.media_alt,
 
     overlay: data.overlay,

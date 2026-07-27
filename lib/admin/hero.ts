@@ -3,15 +3,16 @@ import { createClient } from "@/lib/supabase/client";
 const supabase = createClient();
 
 export async function updateHero(form: any, file: File | null) {
-  let mediaUrl = form.mediaUrl;
+  // Always default to the stored relative path (form.mediaPath), NOT the full public URL
+  let mediaPath = form.mediaPath;
 
   // Upload new image if selected
   if (file) {
-    // Delete previous image
-    if (mediaUrl) {
+    // Delete previous image using the relative path
+    if (mediaPath) {
       const { error: deleteError } = await supabase.storage
         .from("website-assets")
-        .remove([mediaUrl]);
+        .remove([mediaPath]);
 
       if (deleteError) {
         console.error("Delete error:", deleteError);
@@ -32,19 +33,19 @@ export async function updateHero(form: any, file: File | null) {
       });
 
     if (uploadError) {
-      console.error(uploadError);
+      console.error("Upload error:", uploadError);
       throw uploadError;
     }
 
-    mediaUrl = filePath;
+    mediaPath = filePath;
   }
 
-  // Update hero table
+  // Update hero table with the clean path
   const { error } = await supabase
     .from("hero")
     .update({
       media_type: form.mediaType,
-      media_url: mediaUrl,
+      media_url: mediaPath, // Always save the relative path to DB
       media_alt: form.mediaAlt,
 
       overlay: form.overlay,
@@ -74,9 +75,9 @@ export async function updateHero(form: any, file: File | null) {
     .eq("id", form.id);
 
   if (error) {
-    console.error(error);
+    console.error("Database update error:", error);
     throw error;
   }
 
-  return true;
+  return mediaPath; // Return the new path so the component state can stay in sync
 }

@@ -46,20 +46,28 @@ export default function HeroForm({ data }: HeroFormProps) {
     try {
       setLoading(true);
 
-      await updateHero(form, selectedFile);
+      const newPath = await updateHero(form, selectedFile);
+
+      // Keep internal form state synchronized with the updated path
+      setForm((prev: any) => ({
+        ...prev,
+        mediaPath: newPath,
+      }));
 
       alert("Hero updated successfully!");
 
       setSelectedFile(null);
     } catch (error: any) {
-    console.error("FULL ERROR:", error);
+      console.error("FULL ERROR:", error);
 
-    alert(
-      error?.message ||
-      error?.error_description ||
-      JSON.stringify(error)
-    );
-  }
+      alert(
+        error?.message ||
+        error?.error_description ||
+        JSON.stringify(error)
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
