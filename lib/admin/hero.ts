@@ -3,49 +3,44 @@ import { createClient } from "@/lib/supabase/client";
 const supabase = createClient();
 
 export async function updateHero(form: any, file: File | null) {
-  // Always default to the stored relative path (form.mediaPath), NOT the full public URL
   let mediaPath = form.mediaPath;
 
   // Upload new image if selected
   if (file) {
-    // Delete previous image using the relative path
-    if (mediaPath) {
-      const { error: deleteError } = await supabase.storage
+    const extension = file.name.split(".").pop();
+    
+    // Fixed path so it replaces the old hero image instead of accumulating new ones
+    const filePath = `hero/hero-media.${extension}`;
+
+    // Optional: Delete old file if the extension changed (e.g. replacing .png with .webp)
+    if (mediaPath && mediaPath !== filePath) {
+      await supabase.storage
         .from("website-assets")
         .remove([mediaPath]);
-
-      if (deleteError) {
-        console.error("Delete error:", deleteError);
-      }
     }
 
-    // Create unique file name
-    const extension = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${extension}`;
-    const filePath = `hero/${fileName}`;
-
-    // Upload new image
+    // Upload with upsert: true to overwrite any existing file at filePath
     const { error: uploadError } = await supabase.storage
       .from("website-assets")
       .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
+        cacheControl: "0", // Avoid CDN caching stale versions
+        upsert: true,
       });
 
     if (uploadError) {
-      console.error("Upload error:", uploadError);
+      console.error("Storage upload error:", uploadError);
       throw uploadError;
     }
 
     mediaPath = filePath;
   }
 
-  // Update hero table with the clean path
+  // Update hero table record
   const { error } = await supabase
     .from("hero")
     .update({
       media_type: form.mediaType,
-      media_url: mediaPath, // Always save the relative path to DB
+      media_url: mediaPath, // Clean relative path saved in database
       media_alt: form.mediaAlt,
 
       overlay: form.overlay,
@@ -79,5 +74,5 @@ export async function updateHero(form: any, file: File | null) {
     throw error;
   }
 
-  return mediaPath; // Return the new path so the component state can stay in sync
+  return mediaPath;
 }

@@ -90,7 +90,7 @@ export default function FeaturedProducts({ data }: Props) {
             >
               <div className="relative h-[220px] sm:h-[340px] lg:h-[400px] w-full overflow-hidden">
                 <Image
-                  src={product.image}
+                  src={product.imageUrl}
                   alt={isArabic ? product.titleAr : product.titleEn}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

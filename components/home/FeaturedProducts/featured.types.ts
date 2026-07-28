@@ -1,11 +1,19 @@
 export interface FeaturedProduct {
   id: number;
+
   titleEn: string;
   titleAr: string;
+
   categoryEn: string;
   categoryAr: string;
-  image: string;
+
+  imagePath: string;
+  imageUrl: string;
+
   href: string;
+
+  displayOrder: number;
+  isActive: boolean;
 }
 
 export interface FeaturedProductsData {

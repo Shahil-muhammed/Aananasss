@@ -1,46 +1,54 @@
-import { createClient } from "@/lib/supabase/server";
-import { FeaturedProductsData } from "@/components/home/FeaturedProducts/featured.types";
+import { createClient } from "@/lib/supabase/client";
 
-export async function getFeaturedProducts(): Promise<FeaturedProductsData> {
-  const supabase = await createClient();
+const supabase = createClient();
 
-  const { data: section, error: sectionError } = await supabase
-    .from("featured_section")
-    .select("*")
-    .single();
-
-  if (sectionError || !section) {
-    throw new Error("Failed to fetch featured section.");
-  }
-
-  const { data: products, error: productsError } = await supabase
+export async function getFeaturedProducts() {
+  const { data, error } = await supabase
     .from("featured_products")
-    .select("*")
+    .select(`
+      id,
+      title_en,
+      title_ar,
+      category_en,
+      category_ar,
+      image,
+      href,
+      display_order,
+      is_active,
+      updated_at
+    `)
     .eq("is_active", true)
     .order("display_order", { ascending: true });
 
-  if (productsError || !products) {
-    throw new Error("Failed to fetch featured products.");
+  if (error) {
+    console.error("Error fetching featured products:", error);
+    return [];
   }
 
-  return {
-    sectionLabelEn: section.section_label_en,
-    sectionLabelAr: section.section_label_ar,
+  return data.map((item) => {
+    let imageUrl = "";
 
-    headingEn: section.heading_en,
-    headingAr: section.heading_ar,
+    if (item.image) {
+      const {
+        data: { publicUrl },
+      } = supabase.storage
+        .from("website-assets")
+        .getPublicUrl(item.image);
 
-    quoteEn: section.quote_en,
-    quoteAr: section.quote_ar,
+      imageUrl = `${publicUrl}?v=${new Date(item.updated_at).getTime()}`;
+    }
 
-    products: products.map((product) => ({
-      id: product.id,
-      titleEn: product.title_en,
-      titleAr: product.title_ar,
-      categoryEn: product.category_en,
-      categoryAr: product.category_ar,
-      image: product.image,
-      href: product.href,
-    })),
-  };
+    return {
+      id: item.id,
+      titleEn: item.title_en,
+      titleAr: item.title_ar,
+      categoryEn: item.category_en,
+      categoryAr: item.category_ar,
+      imagePath: item.image,
+      imageUrl,
+      href: item.href,
+      displayOrder: item.display_order,
+      isActive: item.is_active,
+    };
+  });
 }
