@@ -35,18 +35,26 @@ export async function getBranches(): Promise<BranchesData> {
     headingLine1Ar: section.heading_line1_ar,
     headingLine2Ar: section.heading_line2_ar,
 
-    branches: branches.map((branch) => ({
-      id: branch.id,
+    branches: branches.map((branch) => {
+      const {
+        data: { publicUrl },
+      } = supabase.storage
+        .from("website-assets")
+        .getPublicUrl(branch.image);
 
-      titleEn: branch.title_en,
-      titleAr: branch.title_ar,
+      return {
+        id: branch.id,
 
-      locationEn: branch.location_en,
-      locationAr: branch.location_ar,
+        titleEn: branch.title_en,
+        titleAr: branch.title_ar,
 
-      image: branch.image,
+        locationEn: branch.location_en,
+        locationAr: branch.location_ar,
 
-      href: branch.href,
-    })),
+        image: `${publicUrl}?v=${branch.updated_at}`,
+
+        href: branch.href,
+      };
+    }),
   };
 }
