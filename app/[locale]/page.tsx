@@ -6,7 +6,8 @@ import MenuIntro from "@/components/home/MenuIntro";
 import Branches from "@/components/home/Branches";
 
 import { getHero } from "@/lib/hero/hero";
-import { getFeaturedProducts } from "@/lib/hero/featured";
+// 1. Change the import to getFeaturedProductsData
+import { getFeaturedProductsData } from "@/lib/hero/featured";
 import { getProductTicker } from "@/lib/hero/product-ticker";
 import { getQuoteSection } from "@/lib/hero/quote";
 import { getMenuIntro } from "@/lib/hero/menu-intro";
@@ -22,7 +23,8 @@ export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
 
   const heroData = await getHero();
-  const featuredProductsData = await getFeaturedProducts();
+  // 2. Fetch the complete object instead of just the product array
+  const featuredProductsData = await getFeaturedProductsData();
   const productTickerData = await getProductTicker();
   const quoteData = await getQuoteSection();
   const menuIntroData = await getMenuIntro();
