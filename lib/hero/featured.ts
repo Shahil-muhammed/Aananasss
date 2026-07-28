@@ -2,6 +2,34 @@ import { createClient } from "@/lib/supabase/client";
 
 const supabase = createClient();
 
+export async function getFeaturedSection() {
+  const { data, error } = await supabase
+    .from("featured_section")
+    .select(`
+      section_label_en,
+      section_label_ar,
+      heading_en,
+      heading_ar,
+      quote_en,
+      quote_ar
+    `)
+    .single();
+
+  if (error) {
+    console.error("Error fetching featured section:", error);
+    return null;
+  }
+
+  return {
+    sectionLabelEn: data.section_label_en ?? "",
+    sectionLabelAr: data.section_label_ar ?? "",
+    headingEn: data.heading_en ?? "",
+    headingAr: data.heading_ar ?? "",
+    quoteEn: data.quote_en ?? "",
+    quoteAr: data.quote_ar ?? "",
+  };
+}
+
 export async function getFeaturedProducts() {
   const { data, error } = await supabase
     .from("featured_products")
@@ -51,4 +79,22 @@ export async function getFeaturedProducts() {
       isActive: item.is_active,
     };
   });
+}
+
+// Wrapper function that matches the 'FeaturedProductsData' interface expected by the UI
+export async function getFeaturedProductsData() {
+  const [products, section] = await Promise.all([
+    getFeaturedProducts(),
+    getFeaturedSection(),
+  ]);
+
+  return {
+    sectionLabelEn: section?.sectionLabelEn ?? "",
+    sectionLabelAr: section?.sectionLabelAr ?? "",
+    headingEn: section?.headingEn ?? "",
+    headingAr: section?.headingAr ?? "",
+    quoteEn: section?.quoteEn ?? "",
+    quoteAr: section?.quoteAr ?? "",
+    products,
+  };
 }
