@@ -38,22 +38,37 @@ export async function getMenuIntro(): Promise<MenuIntroData> {
     buttonEn: section.button_en,
     buttonAr: section.button_ar,
 
-    items: items.map((item) => ({
-      id: item.id,
-      number: item.number,
+    items: items.map((item) => {
+      let image = "";
 
-      titleEn: item.title_en,
-      titleAr: item.title_ar,
+      if (item.image) {
+        const {
+          data: { publicUrl },
+        } = supabase.storage
+          .from("website-assets")
+          .getPublicUrl(item.image);
 
-      image: item.image,
+        image = `${publicUrl}?v=${new Date(item.updated_at).getTime()}`;
+      }
 
-      dotColor: item.dot_color,
+      return {
+        id: item.id,
 
-      descriptionEn: item.description_en,
-      descriptionAr: item.description_ar,
+        number: item.number,
 
-      captionEn: item.caption_en,
-      captionAr: item.caption_ar,
-    })),
+        titleEn: item.title_en,
+        titleAr: item.title_ar,
+
+        image,
+
+        dotColor: item.dot_color,
+
+        descriptionEn: item.description_en,
+        descriptionAr: item.description_ar,
+
+        captionEn: item.caption_en,
+        captionAr: item.caption_ar,
+      };
+    }),
   };
 }
