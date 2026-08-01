@@ -22,11 +22,15 @@ function getPageTitle(pathname: string) {
   if (pathname.includes("/homepage/branches"))
     return "Branches";
 
-  if (pathname.includes("/restaurant/menu"))
-    return "Menu";
+  if (pathname.includes("/menu/hero")) return "Menu Hero";
 
-  if (pathname.includes("/restaurant/categories"))
-    return "Categories";
+  if (pathname.includes("/menu/categories")) return "Menu Categories";
+
+  if (pathname.includes("/menu/items")) return "Menu Items";
+
+  if (pathname.includes("/menu/allergens")) return "Menu Allergens";
+
+  if (pathname.includes("/menu")) return "Menu";
 
   if (pathname.includes("/restaurant/story"))
     return "Our Story";

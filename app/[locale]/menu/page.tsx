@@ -1,64 +1,26 @@
-"use client";
+import { getMenuHero } from "@/lib/menu/hero";
+import { getMenuCategories } from "@/lib/menu/categories";
+import { getMenuItems } from "@/lib/menu/items";
+import { transformMenuSections } from "@/lib/menu/transform";
 
-import { useState } from "react";
+import MenuPageClient from "@/components/menu/MenuPageClient";
 
-import Hero from "@/components/menu/Hero";
-import CategoryNavigation from "@/components/menu/CategoryNavigation";
-import MenuSection from "@/components/menu/MenuSection";
-import ItemModal from "@/components/menu/ItemModal";
+export default async function MenuPage() {
+  const hero = await getMenuHero();
 
-import { menuSections } from "@/components/menu/MenuSection/menuSection.data";
-import { MenuItem, MenuSectionData } from "@/components/menu/MenuSection/menuSection.types";
+  const categories = await getMenuCategories();
 
-export default function MenuPage() {
-  const [activeCategory, setActiveCategory] = useState("all");
-  
-  // State for tracking the currently selected menu item & its section
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const [selectedSection, setSelectedSection] = useState<MenuSectionData | null>(null);
+  const items = await getMenuItems();
 
-  // Filter sections strictly based on selected category tab
-  const filteredSections =
-    activeCategory === "all"
-      ? menuSections
-      : menuSections.filter((section) => section.id === activeCategory);
-
-  const handleSelectItem = (item: MenuItem, section: MenuSectionData) => {
-    setSelectedItem(item);
-    setSelectedSection(section);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedItem(null);
-    setSelectedSection(null);
-  };
+  const sections = transformMenuSections(
+    categories,
+    items
+  );
 
   return (
-    <main className="min-h-screen">
-      <Hero />
-
-      <CategoryNavigation
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-      />
-
-      {/* Renders filtered sections with the click handler */}
-      <div className="flex flex-col">
-        {filteredSections.map((section) => (
-          <MenuSection
-            key={section.id}
-            section={section}
-            onSelectItem={handleSelectItem}
-          />
-        ))}
-      </div>
-
-      {/* Item Detail Modal */}
-      <ItemModal
-        item={selectedItem}
-        section={selectedSection}
-        onClose={handleCloseModal}
-      />
-    </main>
+    <MenuPageClient
+      hero={hero}
+      sections={sections}
+    />
   );
 }

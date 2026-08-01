@@ -4,25 +4,29 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 
-import { heroData } from "./hero.data";
+import { MenuHeroData } from "./hero.types";
 
-export default function Hero() {
+interface HeroProps {
+  data: MenuHeroData;
+}
+
+export default function Hero({ data }: HeroProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
-  const hasMedia = heroData.mediaUrl.length > 0;
-  const isBackground = heroData.display === "background";
-  const isInline = heroData.display === "inline";
+  const hasMedia = !!data.mediaUrl;
+  const isBackground = data.display === "background";
+  const isInline = data.display === "inline";
 
   return (
     <section className="relative overflow-hidden bg-[#F3ECD8] pt-20 pb-20 lg:pt-24 lg:pb-22 antialiased">
       {/* Background Media */}
       {hasMedia && isBackground && (
         <div className="absolute inset-0 z-0">
-          {heroData.mediaType === "image" ? (
+          {data.mediaType === "image" ? (
             <Image
-              src={heroData.mediaUrl}
-              alt={heroData.mediaAlt}
+              src={data.mediaUrl}
+              alt={data.mediaAlt}
               fill
               priority
               className="object-cover"
@@ -35,7 +39,7 @@ export default function Hero() {
               playsInline
               className="absolute inset-0 h-full w-full object-cover"
             >
-              <source src={heroData.mediaUrl} />
+              <source src={data.mediaUrl} />
             </video>
           )}
 
@@ -64,7 +68,7 @@ export default function Hero() {
         }`}
       >
         {/* Text */}
-        <div className={`${isInline ? "flex-1" : ""}`}>
+        <div className={isInline ? "flex-1" : ""}>
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,7 +77,7 @@ export default function Hero() {
               isBackground ? "text-white/95" : "text-[#31451B]"
             } ${isArabic ? "text-right" : "text-left"}`}
           >
-            {isArabic ? heroData.labelAr : heroData.labelEn}
+            {isArabic ? data.labelAr : data.labelEn}
           </motion.p>
 
           <motion.div
@@ -90,7 +94,7 @@ export default function Hero() {
                 isBackground
                   ? {
                       textShadow:
-                        "0 12px 36px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.3)"
+                        "0 12px 36px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.3)",
                     }
                   : undefined
               }
@@ -100,15 +104,11 @@ export default function Hero() {
                   isBackground ? "text-white" : "text-[#31451B]"
                 }`}
               >
-                {isArabic
-                  ? heroData.titleLine1Ar
-                  : heroData.titleLine1En}
+                {isArabic ? data.titleLine1Ar : data.titleLine1En}
               </span>
 
               <span className="block italic text-[#ECE85D] text-[48px] sm:text-[72px] md:text-[95px] lg:text-[120px] xl:text-[135px]">
-                {isArabic
-                  ? heroData.titleLine2Ar
-                  : heroData.titleLine2En}
+                {isArabic ? data.titleLine2Ar : data.titleLine2En}
               </span>
             </h1>
           </motion.div>
@@ -122,10 +122,10 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
             className="relative flex-1 h-[350px] lg:h-[550px] rounded-3xl overflow-hidden"
           >
-            {heroData.mediaType === "image" ? (
+            {data.mediaType === "image" ? (
               <Image
-                src={heroData.mediaUrl}
-                alt={heroData.mediaAlt}
+                src={data.mediaUrl}
+                alt={data.mediaAlt}
                 fill
                 className="object-cover"
               />
@@ -137,7 +137,7 @@ export default function Hero() {
                 playsInline
                 className="h-full w-full object-cover"
               >
-                <source src={heroData.mediaUrl} />
+                <source src={data.mediaUrl} />
               </video>
             )}
           </motion.div>
@@ -155,7 +155,7 @@ export default function Hero() {
           }`}
         >
           <span className="text-[9px] uppercase tracking-[1.5px] text-[#A8A08A] font-semibold">
-            {heroData.mediaAlt || "PHOTO COMING"}
+            {data.mediaAlt || "PHOTO COMING"}
           </span>
         </motion.div>
       )}
