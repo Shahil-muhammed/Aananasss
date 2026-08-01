@@ -3,13 +3,14 @@
 import { useLocale } from "next-intl";
 import Image from "next/image";
 
-import { MenuSectionData } from "./menuSection.types";
+import { MenuItem, MenuSectionData } from "./menuSection.types";
 
 type Props = {
   section: MenuSectionData;
+  onSelectItem: (item: MenuItem, section: MenuSectionData) => void;
 };
 
-export default function MenuSection({ section }: Props) {
+export default function MenuSection({ section, onSelectItem }: Props) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
@@ -19,7 +20,6 @@ export default function MenuSection({ section }: Props) {
       style={{ backgroundColor: section.backgroundColor }}
       className="relative py-20 overflow-hidden"
     >
-      {/* Micro-Grid Texture Overlay */}
       <div 
         className="pointer-events-none absolute inset-0 opacity-25"
         style={{
@@ -35,7 +35,6 @@ export default function MenuSection({ section }: Props) {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid gap-14 lg:grid-cols-2 items-start">
 
-          {/* Left Column (Image) */}
           <div className="order-2 lg:order-1">
             <div className="relative aspect-square overflow-hidden rounded-3xl shadow-sm">
               <Image
@@ -47,10 +46,7 @@ export default function MenuSection({ section }: Props) {
             </div>
           </div>
 
-          {/* Right Column (Header & Items) */}
           <div className="order-1 lg:order-2 space-y-8">
-            
-            {/* Section Header */}
             <div className="flex items-baseline gap-4 border-b border-black/10 pb-6">
               <span
                 className="text-6xl font-serif italic font-light"
@@ -66,12 +62,12 @@ export default function MenuSection({ section }: Props) {
               </h2>
             </div>
 
-            {/* Menu Items List */}
             <div className="space-y-8">
               {section.items.map((item) => (
                 <article
                   key={item.id}
-                  className="border-b border-black/10 pb-6"
+                  onClick={() => onSelectItem(item, section)}
+                  className="border-b border-black/10 pb-6 cursor-pointer group hover:opacity-80 transition-opacity"
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div>
@@ -87,9 +83,9 @@ export default function MenuSection({ section }: Props) {
                       </p>
 
                       <div className="mt-4 flex gap-5 text-[11px] font-mono tracking-widest text-black/60 uppercase">
-                        <span>P {item.protein}G</span>
-                        <span>C {item.carbs}G</span>
-                        <span>F {item.fat}G</span>
+                        <span>P {item.protein}</span>
+                        <span>C {item.carbs}</span>
+                        <span>F {item.fat}</span>
                       </div>
                     </div>
 
