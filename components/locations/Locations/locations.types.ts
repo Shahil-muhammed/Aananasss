@@ -29,9 +29,13 @@ export interface Location {
 
   img: string;
 
-  amenities: string[];
+  features: string[];
+
+  deliveryPlatforms: string[];
 
   note: LocationNote;
 
   coords: LocationCoords;
+
+  googleMaps: string;
 }
