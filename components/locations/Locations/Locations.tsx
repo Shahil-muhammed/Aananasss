@@ -3,22 +3,25 @@
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
 
-import { locations } from "./locations.data";
+import { Location } from "./locations.types";
 
-export default function Locations() {
+interface Props {
+  locations: Location[];
+}
+
+export default function Locations({ locations }: Props) {
   const locale = useLocale();
+
   const isArabic = locale === "ar";
 
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(
     locations[0]?.id || null
   );
 
-  // Dynamic row chunk size state (2 for mobile/tablet, 4 for desktop)
   const [cardsPerRow, setCardsPerRow] = useState(2);
 
   useEffect(() => {
     const handleResize = () => {
-      // 1024px corresponds to Tailwind's `lg` breakpoint
       if (window.innerWidth >= 1024) {
         setCardsPerRow(4);
       } else {
@@ -26,15 +29,15 @@ export default function Locations() {
       }
     };
 
-    // Initial check
     handleResize();
 
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Dynamically group items based on screen size
   const rows = [];
+
   for (let i = 0; i < locations.length; i += cardsPerRow) {
     rows.push(locations.slice(i, i + cardsPerRow));
   }
@@ -62,7 +65,7 @@ export default function Locations() {
 
           return (
             <div key={rowIndex} className="space-y-4 md:space-y-6">
-              {/* Cards Grid Row (2 items per row on mobile, 4 on desktop) */}
+              {/* Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {row.map((location) => {
                   const isSelected = selectedLocationId === location.id;
@@ -79,27 +82,32 @@ export default function Locations() {
                         isSelected ? "ring-2 ring-[#3B4823]" : ""
                       }`}
                     >
-                      {/* Image container */}
                       <div className="relative aspect-[4/5] w-full overflow-hidden">
                         <img
                           src={location.img}
                           alt={location.name}
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
+
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
-                        {/* Top Tag Badge */}
                         <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-black/40 px-1.5 py-0.5 text-[8px] sm:text-[9px] font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
-                          {isArabic ? location.tag.ar : location.tag.en}
+                          {isArabic
+                            ? location.tag.ar
+                            : location.tag.en}
                         </span>
 
-                        {/* Text Overlay */}
                         <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 text-white">
                           <h3 className="font-serif text-lg sm:text-2xl italic leading-tight">
-                            {isArabic ? location.name_ar : location.name}
+                            {isArabic
+                              ? location.name_ar
+                              : location.name}
                           </h3>
+
                           <p className="mt-0.5 text-[9px] sm:text-xs opacity-75 truncate">
-                            {isArabic ? location.hours_ar : location.hours}
+                            {isArabic
+                              ? location.hours_ar
+                              : location.hours}
                           </p>
                         </div>
                       </div>
@@ -111,7 +119,6 @@ export default function Locations() {
               {/* Expanded Details Panel */}
               {isSelectedInThisRow && selectedLocation && (
                 <div className="relative bg-[#3B4823] p-5 text-white sm:p-8 md:p-10 shadow-2xl transition-all">
-                  {/* Close button */}
                   <button
                     onClick={() => setSelectedLocationId(null)}
                     className="absolute top-3 right-3 sm:top-4 sm:right-4 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs text-white hover:bg-white/20 transition-colors"
@@ -120,7 +127,7 @@ export default function Locations() {
                   </button>
 
                   <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
-                    {/* Left Image */}
+                    {/* Image */}
                     <div className="overflow-hidden">
                       <img
                         src={selectedLocation.img}
@@ -129,7 +136,7 @@ export default function Locations() {
                       />
                     </div>
 
-                    {/* Right Details */}
+                    {/* Details */}
                     <div>
                       <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-[#E4E47A]">
                         {isArabic
@@ -143,16 +150,49 @@ export default function Locations() {
                           : selectedLocation.name}
                       </h2>
 
-                      {/* Amenities */}
-                      <div className="mt-4 flex flex-wrap gap-1.5 sm:gap-2">
-                        {selectedLocation.amenities.map((item) => (
-                          <span
-                            key={item}
-                            className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
-                          >
-                            {item.replace("-", " ")}
-                          </span>
-                        ))}
+                      {/* Delivery Platforms & Features Sections */}
+                      <div className="mt-4 space-y-3">
+                        {/* Section 1: Available On */}
+                        {selectedLocation.deliveryPlatforms &&
+                          selectedLocation.deliveryPlatforms.length > 0 && (
+                            <div>
+                              <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-white/50 mb-1.5">
+                                {isArabic ? "متوفر على" : "Available On"}
+                              </span>
+                              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {selectedLocation.deliveryPlatforms.map(
+                                  (item) => (
+                                    <span
+                                      key={item}
+                                      className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                    >
+                                      {item.replace("-", " ")}
+                                    </span>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                        {/* Section 2: Features */}
+                        {selectedLocation.features &&
+                          selectedLocation.features.length > 0 && (
+                            <div>
+                              <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-white/50 mb-1.5">
+                                {isArabic ? "المميزات" : "Features"}
+                              </span>
+                              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {selectedLocation.features.map((item) => (
+                                  <span
+                                    key={item}
+                                    className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                  >
+                                    {item.replace("-", " ")}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                       </div>
 
                       <div className="mt-5 space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-white/80">
@@ -160,6 +200,7 @@ export default function Locations() {
                           <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-white/50">
                             {isArabic ? "العنوان" : "Address"}
                           </span>
+
                           <p className="mt-0.5 font-light">
                             {isArabic
                               ? selectedLocation.addr_ar
@@ -171,6 +212,7 @@ export default function Locations() {
                           <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-white/50">
                             {isArabic ? "أوقات العمل" : "Hours"}
                           </span>
+
                           <p className="mt-0.5 font-light">
                             {isArabic
                               ? selectedLocation.hours_ar

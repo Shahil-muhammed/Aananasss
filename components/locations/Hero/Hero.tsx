@@ -3,65 +3,73 @@
 import Image from "next/image";
 import { useLocale } from "next-intl";
 
-import { heroData } from "./hero.data";
+import { HeroData } from "./hero.types";
 
-export default function Hero() {
+interface Props {
+  hero: HeroData;
+}
+
+export default function Hero({
+  hero,
+}: Props) {
   const locale = useLocale();
+
   const isArabic = locale === "ar";
 
   return (
     <section className="relative w-full h-[380px] sm:h-[460px] md:h-[520px] lg:h-[580px] overflow-hidden">
-      {/* Background Image - Full Bleed */}
+      {/* Background Image */}
       <Image
-        src={heroData.backgroundImage}
+        src={hero.backgroundImage}
         alt="Locations Hero"
         fill
         priority
         className="object-cover object-center"
       />
 
-      {/* Dark Overlay */}
+      {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/40"
-        style={{ opacity: heroData.overlayOpacity || 0.35 }}
+        style={{
+          opacity: hero.overlayOpacity || 0.35,
+        }}
       />
 
-      {/* Content Container (Matches max-w-7xl alignment of cards grid below) */}
+      {/* Content */}
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-center px-6 md:px-12">
         <div className="max-w-4xl">
-          {/* Label */}
+
           <p className="mb-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-[#E5E56D]">
             {isArabic
-              ? heroData.sectionLabelAr
-              : heroData.sectionLabelEn}
+              ? hero.sectionLabelAr
+              : hero.sectionLabelEn}
           </p>
 
-          {/* Heading */}
           <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[90px] italic leading-[0.92] tracking-tight text-white">
             {isArabic ? (
               <>
-                {heroData.titleAr}{" "}
+                {hero.titleAr}{" "}
                 <span className="text-[#E5E56D]">
-                  {heroData.titleHighlightAr}
+                  {hero.titleHighlightAr}
                 </span>
               </>
             ) : (
               <>
-                {heroData.titleEn}
+                {hero.titleEn}
                 <br />
                 <span className="text-[#E5E56D]">
-                  {heroData.titleHighlightEn}
+                  {hero.titleHighlightEn}
                 </span>
               </>
             )}
           </h1>
 
-          {/* Subtitle */}
           <p className="mt-4 sm:mt-6 text-xs sm:text-sm font-light text-white/80">
             {isArabic
-              ? heroData.subtitleAr
-              : heroData.subtitleEn}
+              ? hero.subtitleAr
+              : hero.subtitleEn}
           </p>
+
         </div>
       </div>
     </section>
