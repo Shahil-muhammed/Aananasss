@@ -248,7 +248,14 @@ export default function Locations({ locations }: Props) {
                       </p>
 
                       <a
-                        href={`https://www.google.com/maps?q=${selectedLocation.coords.lat},${selectedLocation.coords.lng}`}
+                        href={
+                          selectedLocation.googleMaps?.trim()
+                            ? selectedLocation.googleMaps
+                            : selectedLocation.coords?.lat !== 0 &&
+                              selectedLocation.coords?.lng !== 0
+                            ? `https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.coords.lat},${selectedLocation.coords.lng}`
+                            : "#"
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-6 sm:mt-8 inline-flex items-center gap-2 bg-[#E4E47A] px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-white"

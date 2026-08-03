@@ -85,6 +85,23 @@ export async function getLocations() {
       .map((bp) => platformMap.get(bp.platform_id))
       .filter((item): item is { en: string; ar: string } => Boolean(item));
 
+    // Safety checks for googleMaps fallback logic
+    const hasGoogleUrl =
+      location.google_maps_url && location.google_maps_url.trim() !== "";
+
+    const hasValidCoords =
+      location.latitude !== null &&
+      location.longitude !== null &&
+      (location.latitude !== 0 || location.longitude !== 0);
+
+    const googleMapsUrl = hasGoogleUrl
+      ? location.google_maps_url.trim()
+      : hasValidCoords
+      ? `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          location.name_en || ""
+        )}`;
+
     // 5. Return exact required object structure matching Location interface
     return {
       id: location.slug,
@@ -118,7 +135,7 @@ export async function getLocations() {
         lng: location.longitude,
       },
 
-      googleMaps: location.google_maps_url,
+      googleMaps: googleMapsUrl,
     };
   });
 }
