@@ -161,14 +161,23 @@ export default function Locations({ locations }: Props) {
                               </span>
                               <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                 {selectedLocation.deliveryPlatforms.map(
-                                  (item) => (
-                                    <span
-                                      key={item}
-                                      className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
-                                    >
-                                      {item.replace("-", " ")}
-                                    </span>
-                                  )
+                                  (item, index) => {
+                                    const text =
+                                      typeof item === "string"
+                                        ? item
+                                        : isArabic
+                                        ? item.ar
+                                        : item.en;
+
+                                    return (
+                                      <span
+                                        key={index}
+                                        className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                      >
+                                        {text.replace("-", " ")}
+                                      </span>
+                                    );
+                                  }
                                 )}
                               </div>
                             </div>
@@ -182,14 +191,25 @@ export default function Locations({ locations }: Props) {
                                 {isArabic ? "المميزات" : "Features"}
                               </span>
                               <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                {selectedLocation.features.map((item) => (
-                                  <span
-                                    key={item}
-                                    className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
-                                  >
-                                    {item.replace("-", " ")}
-                                  </span>
-                                ))}
+                                {selectedLocation.features.map(
+                                  (item, index) => {
+                                    const text =
+                                      typeof item === "string"
+                                        ? item
+                                        : isArabic
+                                        ? item.ar
+                                        : item.en;
+
+                                    return (
+                                      <span
+                                        key={index}
+                                        className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                      >
+                                        {text.replace("-", " ")}
+                                      </span>
+                                    );
+                                  }
+                                )}
                               </div>
                             </div>
                           )}

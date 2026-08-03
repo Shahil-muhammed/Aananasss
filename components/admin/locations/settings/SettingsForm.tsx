@@ -158,12 +158,24 @@ export default function SettingsForm({
               />
 
               <Input
-                label="Platform Name"
-                value={platform.name}
+                label="Name (English)"
+                value={platform.nameEn}
                 onChange={(e) =>
                   updateField(
                     platform.id,
-                    "name",
+                    "nameEn",
+                    e.target.value
+                  )
+                }
+              />
+
+              <Input
+                label="Name (Arabic)"
+                value={platform.nameAr}
+                onChange={(e) =>
+                  updateField(
+                    platform.id,
+                    "nameAr",
                     e.target.value
                   )
                 }

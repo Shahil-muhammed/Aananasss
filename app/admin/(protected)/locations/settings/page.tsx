@@ -19,11 +19,13 @@ export default async function LocationsSettingsPage() {
       initialPlatforms={(data ?? []).map((platform) => ({
         id: platform.id,
 
-        code: platform.code,
+        code: platform.code || "",
 
-        name: platform.name,
+        nameEn: platform.name || "",
 
-        icon: platform.icon ?? "",
+        nameAr: platform.name_ar || "",
+
+        icon: platform.icon || "",
       }))}
     />
   );

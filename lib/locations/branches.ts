@@ -40,13 +40,19 @@ export async function getLocations() {
     throw new Error("Failed to fetch location details.");
   }
 
-  // 4. Build efficient lookup maps using exact schema columns
+  // 4. Build efficient lookup maps with both English & Arabic values
   const featureMap = new Map(
-    (locationFeatures || []).map((f) => [f.id, f.name_en])
+    (locationFeatures || []).map((f) => [
+      f.id,
+      { en: f.name_en, ar: f.name_ar || f.name_en },
+    ])
   );
 
   const platformMap = new Map(
-    (deliveryPlatforms || []).map((p) => [p.id, p.name])
+    (deliveryPlatforms || []).map((p) => [
+      p.id,
+      { en: p.name, ar: p.name_ar || p.name },
+    ])
   );
 
   return locations.map((location) => {
@@ -67,19 +73,19 @@ export async function getLocations() {
       image = `${publicUrl}?v=${cacheKey}`;
     }
 
-    // 6. Map features as string[] (using name_en)
+    // 6. Map features as { en: string; ar: string }[]
     const features = (branchFeatures || [])
       .filter((bf) => bf.location_id === location.id)
       .map((bf) => featureMap.get(bf.feature_id))
-      .filter((name): name is string => Boolean(name));
+      .filter((item): item is { en: string; ar: string } => Boolean(item));
 
-    // 7. Map delivery platforms as string[] (using name)
+    // 7. Map delivery platforms as { en: string; ar: string }[]
     const deliveryPlatformsList = (branchPlatforms || [])
       .filter((bp) => bp.location_id === location.id)
       .map((bp) => platformMap.get(bp.platform_id))
-      .filter((name): name is string => Boolean(name));
+      .filter((item): item is { en: string; ar: string } => Boolean(item));
 
-    // 5. Return exact required object structure
+    // 5. Return exact required object structure matching Location interface
     return {
       id: location.slug,
 

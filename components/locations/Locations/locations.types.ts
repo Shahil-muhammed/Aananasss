@@ -1,3 +1,8 @@
+export interface LocalizedString {
+  en: string;
+  ar: string;
+}
+
 export interface LocationTag {
   en: string;
   ar: string;
@@ -29,9 +34,9 @@ export interface Location {
 
   img: string;
 
-  features: string[];
+  features: LocalizedString[];
 
-  deliveryPlatforms: string[];
+  deliveryPlatforms: LocalizedString[];
 
   note: LocationNote;
 

@@ -372,7 +372,9 @@ export interface DeliveryPlatformFormData {
 
   code: string;
 
-  name: string;
+  nameEn: string;
+
+  nameAr: string;
 
   icon: string;
 }
@@ -388,6 +390,8 @@ export async function createDeliveryPlatform() {
       code,
 
       name: "New Platform",
+
+      name_ar: "منصة جديدة",
 
       icon: "",
     });
@@ -407,7 +411,9 @@ export async function updateDeliveryPlatform(
     .update({
       code: platform.code,
 
-      name: platform.name,
+      name: platform.nameEn,
+
+      name_ar: platform.nameAr,
 
       icon: platform.icon,
 
