@@ -434,7 +434,7 @@ export default function BranchForm({
                                 togglePlatform(branch.id, platform.id)
                               }
                             />
-                            <span>{platform.name}</span>
+                            <span>{platform.nameEn}</span>
                           </label>
                         ))}
                       </div>
