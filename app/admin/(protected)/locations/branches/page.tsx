@@ -119,9 +119,10 @@ export default async function LocationsBranchesPage() {
       }))}
       deliveryPlatforms={(platformsResult.data ?? []).map((platform) => ({
         id: platform.id,
-        code: platform.code,
-        name: platform.name,
-        icon: platform.icon,
+        code: platform.code || "",
+        nameEn: platform.name || "",
+        nameAr: platform.name_ar || "",
+        icon: platform.icon || "",
       }))}
     />
   );
