@@ -1,7 +1,10 @@
 export interface StorySectionData {
   id: string;
 
-  chapter: string;
+  chapter: {
+    en: string;
+    ar: string;
+  };
 
   titleEn: string;
   titleAr: string;

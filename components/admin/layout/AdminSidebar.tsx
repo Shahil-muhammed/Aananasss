@@ -69,7 +69,25 @@ const sections = [
       },
       {
         label: "Story",
-        href: "/admin/restaurant/story",
+        href: "/admin/story",
+        children: [
+          {
+            label: "Hero",
+            href: "/admin/story/hero",
+          },
+          {
+            label: "Values",
+            href: "/admin/story/values",
+          },
+          {
+            label: "Sections",
+            href: "/admin/story/sections",
+          },
+          {
+            label: "Stats",
+            href: "/admin/story/stats",
+          },
+        ],
       },
       {
         label: "Locations",

@@ -2,9 +2,42 @@
 
 import Image from "next/image";
 import { useLocale } from "next-intl";
-import { heroData } from "./hero.data";
 
-export default function Hero() {
+interface HeroProps {
+  hero: {
+    id: number;
+
+    sectionLabelEn: string;
+    sectionLabelAr: string;
+
+    titleEn: string;
+    titleHighlightEn: string;
+
+    titleAr: string;
+    titleHighlightAr: string;
+
+    subtitleEn: string;
+    subtitleAr: string;
+
+    backgroundImage: string;
+
+    overlayOpacity: number;
+
+    stats: {
+      id: number;
+
+      labelEn: string;
+      labelAr: string;
+
+      valueEn: string;
+      valueAr: string;
+    }[];
+  };
+}
+
+export default function Hero({
+  hero,
+}: HeroProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
@@ -15,15 +48,20 @@ export default function Hero() {
 
         {/* Background Image */}
         <Image
-          src={heroData.backgroundImage}
+          src={hero.backgroundImage}
           alt="Our Story"
           fill
           priority
           className="object-cover object-center"
         />
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-[#3F4B26]/70" />
+        {/* Dynamic Dark Overlay */}
+        <div
+          className="absolute inset-0 bg-[#3F4B26]"
+          style={{
+            opacity: hero.overlayOpacity,
+          }}
+        />
 
         {/* Decorative Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#3F4B26]/40" />
@@ -39,14 +77,14 @@ export default function Hero() {
           >
             {/* Heading - Reduced sizes across breakpoints */}
             <h1 className="font-serif text-2xl italic leading-[1.12] tracking-tight text-[#F8F3E7] sm:text-4xl md:text-5xl lg:text-[72px] lg:leading-[1.05]">
-              {isArabic ? heroData.titleAr : heroData.titleEn}
+              {isArabic ? hero.titleAr : hero.titleEn}
             </h1>
 
             {/* Description - Compact text sizes */}
             <p className="mx-auto mt-3 max-w-lg text-xs leading-relaxed text-[#F8F3E7]/90 sm:mt-5 sm:text-sm md:mx-0 md:text-base md:leading-7">
               {isArabic
-                ? heroData.descriptionAr
-                : heroData.descriptionEn}
+                ? hero.subtitleAr
+                : hero.subtitleEn}
             </p>
           </div>
         </div>
@@ -89,9 +127,9 @@ export default function Hero() {
       <div className="bg-[#EBE5D8] px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:text-left md:grid-cols-3 md:gap-10 rtl:sm:text-right">
-            {heroData.stats.map((stat, index) => (
+            {hero.stats.map((stat) => (
               <div
-                key={index}
+                key={stat.id}
                 className="flex flex-col gap-1 border-b border-[#3F4B26]/10 pb-4 last:border-b-0 sm:border-b-0 sm:pb-0"
               >
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#3F4B26]/60 sm:text-[11px] sm:tracking-[0.25em]">

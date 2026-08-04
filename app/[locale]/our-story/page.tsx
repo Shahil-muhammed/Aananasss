@@ -1,7 +1,8 @@
 import Hero from "@/components/story/Hero";
 import { StorySection } from "@/components/story/StorySection";
-import { storySections } from "@/components/story/StorySection/storySection.data";
 import Values from "@/components/story/Values";
+
+import { getStoryData } from "@/lib/story/story";
 
 interface OurStoryPageProps {
   params: Promise<{
@@ -14,18 +15,20 @@ export default async function OurStoryPage({
 }: OurStoryPageProps) {
   await params;
 
+  const story = await getStoryData();
+
   return (
     <>
-      <Hero />
+      <Hero hero={story.hero} />
 
-      {storySections.map((section) => (
+      {story.sections.map((section) => (
         <StorySection
           key={section.id}
           section={section}
         />
       ))}
 
-      <Values />
+      <Values values={story.values} />
     </>
   );
 }

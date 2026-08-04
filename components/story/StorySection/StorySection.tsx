@@ -60,13 +60,6 @@ export default function StorySection({
                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 520px"
                 className="object-cover"
               />
-
-              {/* Plate Label */}
-              <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5">
-                <p className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-white">
-                  PLATE {section.chapter.split("—")[0].replace("CH.", "").trim()}
-                </p>
-              </div>
             </div>
           </div>
 
@@ -90,7 +83,7 @@ export default function StorySection({
                     : "#44444499",
               }}
             >
-              {section.chapter}
+              {isArabic ? section.chapter.ar : section.chapter.en}
             </p>
 
             {/* Title */}

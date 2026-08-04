@@ -32,8 +32,15 @@ function getPageTitle(pathname: string) {
 
   if (pathname.includes("/menu")) return "Menu";
 
-  if (pathname.includes("/restaurant/story"))
-    return "Our Story";
+  if (pathname.includes("/story/hero")) return "Story Hero";
+
+  if (pathname.includes("/story/values")) return "Story Values";
+
+  if (pathname.includes("/story/sections")) return "Story Sections";
+
+  if (pathname.includes("/story/stats")) return "Story Stats";
+
+  if (pathname.includes("/story")) return "Our Story";
 
   if (pathname.includes("/restaurant/locations"))
     return "Locations";
