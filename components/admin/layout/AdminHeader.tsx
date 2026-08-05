@@ -1,6 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 function getPageTitle(pathname: string) {
   if (pathname === "/admin/dashboard") return "Dashboard";
@@ -56,6 +58,22 @@ function getPageTitle(pathname: string) {
 
 export default function AdminHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+
+    if (!error) {
+      router.push("/admin/login");
+      router.refresh();
+    }
+
+    setLoggingOut(false);
+  };
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
@@ -70,6 +88,15 @@ export default function AdminHeader() {
       </div>
 
       <div className="flex items-center gap-4">
+        <button
+          type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loggingOut ? "Logging out..." : "Logout"}
+        </button>
+
         <div className="text-right">
           <p className="text-sm font-semibold">
             Admin

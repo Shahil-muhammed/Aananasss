@@ -113,16 +113,7 @@ const sections = [
       },
       {
         label: "Contact",
-        href: "/admin/restaurant/contact",
-      },
-    ],
-  },
-  {
-    title: "Settings",
-    items: [
-      {
-        label: "Settings",
-        href: "/admin/settings",
+        href: "/admin/contact",
       },
     ],
   },

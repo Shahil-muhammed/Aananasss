@@ -3,7 +3,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 
@@ -163,7 +163,7 @@ import { BranchesData } from "./branches.types";
 
             {/* Black Action View All Button */}
             <Link
-              href="/branches"
+              href="/locations"
               className="
                 inline-flex items-center gap-3 bg-[#1F1F1F] text-[#F3ECD8] 
                 px-5 py-3 text-[10px] uppercase tracking-[3px] font-sans rounded-[2px]

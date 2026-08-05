@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useLocale } from "next-intl";
 
-import { contactTopics } from "./contact.data";
-import { ContactFormValues } from "./contact.types";
+import { ContactFormValues, ContactTopic } from "./contact.types";
 
 interface FormErrors {
   name?: string;
@@ -12,7 +11,11 @@ interface FormErrors {
   message?: string;
 }
 
-export default function ContactForm() {
+interface ContactFormProps {
+  contactTopics: ContactTopic[];
+}
+
+export default function ContactForm({ contactTopics }: ContactFormProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
@@ -30,11 +33,9 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // --- Get Active Topic Object directly from contact.data.ts ---
   const selectedTopic =
     contactTopics.find((t) => t.id === form.topic) || contactTopics[0];
 
-  // --- Validation ---
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
@@ -73,40 +74,69 @@ export default function ContactForm() {
     }
   };
 
-  // --- Trigger Mail Client ---
-  const openMailClient = () => {
+  const getEmailContent = () => {
     const recipient = selectedTopic?.email || "info@ananas.com";
     const topicLabel = isArabic
       ? selectedTopic?.labelAr
       : selectedTopic?.labelEn;
 
-    const subject = encodeURIComponent(`[Contact Form] ${topicLabel}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${
-        form.phone || "N/A"
-      }\nTopic: ${topicLabel}\n\nMessage:\n${form.message}`
-    );
+    const subject = `[Contact Form] ${topicLabel}`;
+    const rawBody = `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${
+      form.phone || "N/A"
+    }\nTopic: ${topicLabel}\n\nMessage:\n${form.message}`;
 
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    return { recipient, subject, rawBody };
   };
 
-  // --- Submit Handler ---
+  // --- Open native mail client ---
+  const openMailClient = () => {
+    const { recipient, subject, rawBody } = getEmailContent();
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(rawBody);
+
+    window.location.href = `mailto:${recipient}?subject=${encodedSubject}&body=${encodedBody}`;
+  };
+
+  // --- Open Webmail directly in browser tab ---
+  const openWebmail = (provider: "gmail" | "outlook" | "yahoo") => {
+    const { recipient, subject, rawBody } = getEmailContent();
+    const encRecipient = encodeURIComponent(recipient);
+    const encSubject = encodeURIComponent(subject);
+    const encBody = encodeURIComponent(rawBody);
+
+    let url = "";
+
+    switch (provider) {
+      case "gmail":
+        url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encRecipient}&su=${encSubject}&body=${encBody}`;
+        break;
+      case "outlook":
+        url = `https://outlook.live.com/mail/0/deeplink/compose?to=${encRecipient}&subject=${encSubject}&body=${encBody}`;
+        break;
+      case "yahoo":
+        url = `https://compose.mail.yahoo.com/?to=${encRecipient}&subject=${encSubject}&body=${encBody}`;
+        break;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
-    // 1. Open the mail app with pre-filled contents
+    // First attempt native client
     openMailClient();
-
-    // 2. Set the success UI state
     setSubmitted(true);
   };
 
-  // --- Copy Email Helper ---
   const handleCopyEmail = () => {
-    const recipient = selectedTopic?.email || "info@ananas.com";
-    navigator.clipboard.writeText(recipient);
+    if (!validateForm()) return;
+
+    const { recipient, subject, rawBody } = getEmailContent();
+    const fullDraft = `To: ${recipient}\nSubject: ${subject}\n\n${rawBody}`;
+
+    navigator.clipboard.writeText(fullDraft);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -125,7 +155,6 @@ export default function ContactForm() {
 
   return (
     <section className="relative w-full bg-[#EBE5CD] py-10 sm:py-16 md:py-20 text-[#292723]">
-      {/* Pure Tailwind Micro-Grid Layer */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{
@@ -139,32 +168,57 @@ export default function ContactForm() {
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6 md:px-8 w-full">
         {submitted ? (
-          /* --- SUCCESS SCREEN --- */
+          /* --- SUCCESS / WEBMAIL CHOICE SCREEN --- */
           <div className="py-12 text-center">
-            <h2 className="font-serif text-3xl sm:text-5xl italic text-[#334121]">
-              {isArabic ? "تم فتح تطبيق البريد." : "Mail client opened."}
+            <h2 className="font-serif text-3xl sm:text-4xl italic text-[#334121]">
+              {isArabic ? "اختر طريقة الإرسال" : "Choose how to send your message"}
             </h2>
             <p className="mt-4 font-mono text-xs sm:text-sm uppercase tracking-[0.2em] text-[#292723]/70">
               {isArabic
-                ? "إذا لم يفتح التطبيق، يمكنك نسخ البريد الإلكتروني أدناه."
-                : "If your mail app didn't launch, you can copy the email directly."}
+                ? "إذا لم يفتح تطبيق البريد الإلكتروني، يمكنك فتح الخدمة في المتصفح مباشرة:"
+                : "If a desktop mail app didn't open, send via browser:"}
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Webmail Quick Links */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button
                 type="button"
-                onClick={handleReset}
-                className="rounded-[4px] border border-[#292723]/30 px-6 py-3 font-mono text-xs uppercase tracking-[0.18em] transition hover:border-[#292723]/70"
+                onClick={() => openWebmail("gmail")}
+                className="rounded-[4px] bg-[#EA4335] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
               >
-                {isArabic ? "إرسال رسالة أخرى" : "SEND ANOTHER MESSAGE"}
+                Open in Gmail
+              </button>
+              <button
+                type="button"
+                onClick={() => openWebmail("outlook")}
+                className="rounded-[4px] bg-[#0078D4] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
+              >
+                Open in Outlook Web
+              </button>
+              <button
+                type="button"
+                onClick={() => openWebmail("yahoo")}
+                className="rounded-[4px] bg-[#6001D2] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
+              >
+                Open in Yahoo
+              </button>
+            </div>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 border-t border-[#292723]/10 pt-6">
+              <button
+                type="button"
+                onClick={openMailClient}
+                className="font-mono text-xs uppercase tracking-[0.15em] text-[#292723]/80 underline hover:text-[#292723]"
+              >
+                {isArabic ? "إعادة محاولة فتح تطبيق البريد" : "Re-try Default Mail App"}
               </button>
 
               <button
                 type="button"
-                onClick={openMailClient}
-                className="font-mono text-xs uppercase tracking-[0.15em] text-[#292723]/60 underline hover:text-[#292723]"
+                onClick={handleReset}
+                className="rounded-[4px] border border-[#292723]/30 px-6 py-2.5 font-mono text-xs uppercase tracking-[0.18em] transition hover:border-[#292723]/70"
               >
-                {isArabic ? "إعادة فتح البريد" : "Re-open Mail App"}
+                {isArabic ? "إرسال رسالة أخرى" : "SEND ANOTHER MESSAGE"}
               </button>
             </div>
           </div>
@@ -245,10 +299,7 @@ export default function ContactForm() {
                       key={topic.id}
                       type="button"
                       onClick={() =>
-                        setForm((prev) => ({
-                          ...prev,
-                          topic: topic.id,
-                        }))
+                        setForm((prev) => ({ ...prev, topic: topic.id }))
                       }
                       className={`rounded-full border px-4 sm:px-5 py-2 font-mono text-[10px] sm:text-xs uppercase tracking-[0.15em] transition-all ${
                         isActive
@@ -286,29 +337,65 @@ export default function ContactForm() {
               )}
             </div>
 
-            {/* Submit & Copy Actions */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-              <button
-                type="submit"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-[4px] bg-[#DF9943] px-6 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-[#ce8b38] active:scale-[0.99]"
-              >
-                <span>{isArabic ? "إرسال الرسالة" : "SEND MESSAGE"}</span>
-                <span className="text-sm font-normal">→</span>
-              </button>
+            {/* Direct Open Options */}
+            <div className="space-y-3">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-[4px] bg-[#DF9943] px-6 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-[#ce8b38] active:scale-[0.99]"
+                >
+                  <span>{isArabic ? "إرسال الرسالة" : "SEND MESSAGE"}</span>
+                  <span className="text-sm font-normal">→</span>
+                </button>
 
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                className="font-mono text-[11px] uppercase tracking-[0.15em] text-[#292723]/60 hover:text-[#292723] text-center underline"
-              >
-                {copied
-                  ? isArabic
-                    ? "تم نسخ البريد!"
-                    : "EMAIL COPIED!"
-                  : isArabic
-                  ? "نسخ البريد الإلكتروني المباشر"
-                  : "COPY DIRECT EMAIL"}
-              </button>
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="font-mono text-[11px] uppercase tracking-[0.15em] text-[#292723]/60 hover:text-[#292723] text-center underline"
+                >
+                  {copied
+                    ? isArabic
+                      ? "تم نسخ مسودة البريد!"
+                      : "EMAIL DRAFT COPIED!"
+                    : isArabic
+                    ? "نسخ مسودة البريد الكاملة"
+                    : "COPY COMPLETE DRAFT"}
+                </button>
+              </div>
+
+              {/* Direct Webmail Links under main button */}
+              <div className="flex items-center gap-2 pt-2 text-[11px] font-mono text-[#292723]/60">
+                <span>Or open in browser:</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (validateForm()) openWebmail("gmail");
+                  }}
+                  className="underline hover:text-[#292723]"
+                >
+                  Gmail
+                </button>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (validateForm()) openWebmail("outlook");
+                  }}
+                  className="underline hover:text-[#292723]"
+                >
+                  Outlook
+                </button>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (validateForm()) openWebmail("yahoo");
+                  }}
+                  className="underline hover:text-[#292723]"
+                >
+                  Yahoo
+                </button>
+              </div>
             </div>
           </form>
         )}
