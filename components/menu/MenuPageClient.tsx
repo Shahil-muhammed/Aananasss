@@ -6,6 +6,7 @@ import Hero from "@/components/menu/Hero";
 import CategoryNavigation from "@/components/menu/CategoryNavigation";
 import MenuSection from "@/components/menu/MenuSection";
 import ItemModal from "@/components/menu/ItemModal";
+import IngredientOrigins from "@/components/menu/IngredientOrigins";
 
 import {
   MenuHeroData,
@@ -16,14 +17,18 @@ import {
   MenuSectionData,
 } from "@/components/menu/MenuSection/menuSection.types";
 
+import { IngredientOrigin } from "@/lib/menu/ingredientOrigins";
+
 interface Props {
   hero: MenuHeroData;
   sections: MenuSectionData[];
+  ingredientOrigins: IngredientOrigin[];
 }
 
 export default function MenuPageClient({
   hero,
   sections,
+  ingredientOrigins,
 }: Props) {
   const [activeCategory, setActiveCategory] = useState("all");
 
@@ -65,7 +70,7 @@ export default function MenuPageClient({
         }))}
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
-    />
+      />
 
       <div className="flex flex-col">
         {filteredSections.map((section) => (
@@ -76,6 +81,10 @@ export default function MenuPageClient({
           />
         ))}
       </div>
+
+      <IngredientOrigins
+        items={ingredientOrigins}
+      />
 
       <ItemModal
         item={selectedItem}

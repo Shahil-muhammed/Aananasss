@@ -59,17 +59,21 @@ export default function CategoryNavigation({
     }
   };
 
+  const scrollToIngredientOrigins = () => {
+    document.getElementById("ingredient-origins")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <section className="sticky top-0 z-40 bg-[#D9E273] border-y border-black/10 py-2.5">
-      <div className="mx-auto max-w-[1800px]">
+    <section className="sticky top-0 z-40 bg-[#dbe868] py-4">
+      <div className="relative mx-auto max-w-[1400px] px-6">
         <div
           className="
-            flex items-center gap-2
-            overflow-x-auto snap-x snap-mandatory
-            px-4 scroll-px-4
-            [scrollbar-width:none]
-            [&::-webkit-scrollbar]:hidden
-            touch-pan-x sm:flex-wrap
+            flex flex-wrap items-center justify-center gap-x-2 gap-y-2.5
+            px-4 sm:px-16
+            [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           "
         >
           {allCategories.map((category) => {
@@ -85,25 +89,46 @@ export default function CategoryNavigation({
                 aria-current={isActive ? "true" : undefined}
                 onClick={() => scrollToSection(category.id)}
                 className={`
-                  snap-start whitespace-nowrap px-4 py-2
-                  sm:px-3.5 sm:py-1.5 rounded-full
-                  text-xs font-medium tracking-wide
+                  snap-start whitespace-nowrap px-4 py-1.5
+                  rounded-full text-[11px] font-semibold tracking-[0.18em] uppercase
                   transition-all duration-200
-                  shrink-0 active:scale-95
-                  touch-manipulation
+                  shrink-0 active:scale-95 touch-manipulation
                   ${
                     isActive
-                      ? "bg-[#384824] text-[#D9E273]"
-                      : "bg-transparent text-[#384824] border border-[#384824]/30 hover:border-[#384824]"
+                      ? "bg-[#34401a] text-[#dbe868] border border-[#34401a]"
+                      : "bg-transparent text-[#34401a] border border-[#34401a]/40 hover:border-[#34401a]"
                   }
                 `}
               >
-                {isArabic
-                  ? category.titleAr
-                  : category.titleEn}
+                {isArabic ? category.titleAr : category.titleEn}
               </button>
             );
           })}
+        </div>
+
+        {/* Floating SOURCING Button matching image position */}
+        <div className="mt-2 flex justify-end sm:absolute sm:right-6 sm:bottom-0 sm:mt-0">
+          <button
+            type="button"
+            onClick={scrollToIngredientOrigins}
+            className="
+              shrink-0
+              rounded-full
+              bg-[#34401a]
+              px-5
+              py-1.5
+              text-[11px]
+              font-semibold
+              tracking-[0.18em]
+              text-[#dbe868]
+              transition-all
+              hover:opacity-95
+              active:scale-95
+              border border-[#34401a]
+            "
+          >
+            {isArabic ? "التوريد ↓" : "SOURCING ↓"}
+          </button>
         </div>
       </div>
     </section>

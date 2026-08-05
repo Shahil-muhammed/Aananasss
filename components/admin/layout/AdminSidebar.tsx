@@ -65,6 +65,10 @@ const sections = [
             label: "Allergens",
             href: "/admin/menu/allergens",
           },
+          {
+            label: "Meat Source",
+            href: "/admin/menu/ingredient-origins",
+          },
         ],
       },
       {

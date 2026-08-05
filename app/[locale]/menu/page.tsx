@@ -1,6 +1,7 @@
 import { getMenuHero } from "@/lib/menu/hero";
 import { getMenuCategories } from "@/lib/menu/categories";
 import { getMenuItems } from "@/lib/menu/items";
+import { getIngredientOrigins } from "@/lib/menu/ingredientOrigins";
 import { transformMenuSections } from "@/lib/menu/transform";
 
 import MenuPageClient from "@/components/menu/MenuPageClient";
@@ -12,6 +13,9 @@ export default async function MenuPage() {
 
   const items = await getMenuItems();
 
+  const ingredientOrigins =
+    await getIngredientOrigins();
+
   const sections = transformMenuSections(
     categories,
     items
@@ -21,6 +25,7 @@ export default async function MenuPage() {
     <MenuPageClient
       hero={hero}
       sections={sections}
+      ingredientOrigins={ingredientOrigins}
     />
   );
 }
