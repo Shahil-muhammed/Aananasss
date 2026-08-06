@@ -18,6 +18,9 @@ import {
 
 const supabase = createClient();
 
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 interface Category extends MenuCategoryFormData {
   imageUrl: string;
 }
@@ -79,6 +82,16 @@ export default function CategoryCard({
 
     if (!file) return;
 
+    // Validate file size limit (1 MB)
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+      alert(
+        `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit. Selected file is ${fileSizeInMB} MB. Please select a smaller file.`
+      );
+      e.target.value = ""; // Clear file input
+      return;
+    }
+
     if (preview.startsWith("blob:")) {
       URL.revokeObjectURL(preview);
     }
@@ -123,16 +136,28 @@ export default function CategoryCard({
 
       alert("Saved successfully.");
     } catch (error: unknown) {
-    console.error(error);
+      console.error(error);
 
-    let message = "Failed to save.";
+      let message = "Failed to save.";
 
-    if (error instanceof Error) {
+      if (error instanceof Error) {
         message = error.message;
-    }
+      } else if (typeof error === "string") {
+        message = error;
+      } else if (error && typeof error === "object") {
+        message = JSON.stringify(error);
+      }
 
-    alert(message);
-    }finally {
+      // Handle Next.js body payload size limit errors
+      if (
+        message.includes("Body exceeded 1 MB limit") ||
+        message.includes("body size limit")
+      ) {
+        alert("Failed to save: Payload size exceeds the 1 MB size limit. Please upload a smaller image.");
+      } else {
+        alert(`Failed to save: ${message}`);
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -156,7 +181,8 @@ export default function CategoryCard({
       alert("Failed to delete.");
     }
   };
-    return (
+
+  return (
     <Card>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 

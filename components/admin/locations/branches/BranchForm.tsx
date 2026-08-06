@@ -38,6 +38,8 @@ export default function BranchForm({
   const [previews, setPreviews] = useState<Record<number, string>>({});
   const [searchTerm, setSearchTerm] = useState("");
 
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB limit
+
   useEffect(() => {
     const urls: string[] = [];
     const next: Record<number, string> = {};
@@ -124,13 +126,23 @@ export default function BranchForm({
 
   const handleSave = async (branch: BranchFormData) => {
     try {
+      const selectedFile = files[branch.id] ?? null;
+
+      // Double check size prior to submitting
+      if (selectedFile && selectedFile.size > MAX_FILE_SIZE) {
+        alert("File size more than 1 MB is not allowed.");
+        return;
+      }
+
       setLoadingId(branch.id);
-      await updateBranch(branch, files[branch.id] ?? null);
+      await updateBranch(branch, selectedFile);
       alert("Branch updated successfully.");
       window.location.reload();
     } catch (error) {
       console.error(error);
-      alert("Failed to update branch.");
+      alert(
+        error instanceof Error ? error.message : "Failed to update branch."
+      );
     } finally {
       setLoadingId(null);
     }
@@ -447,12 +459,22 @@ export default function BranchForm({
                       <FileUpload
                         label="Branch Image"
                         accept="image/*"
-                        onChange={(selectedFile) =>
+                        onChange={(selectedFile) => {
+                          if (selectedFile && selectedFile.size > MAX_FILE_SIZE) {
+                            alert("File size more than 1 MB is not allowed.");
+                            // Clear out any previous file selection
+                            setFiles((prev) => ({
+                              ...prev,
+                              [branch.id]: null,
+                            }));
+                            return;
+                          }
+
                           setFiles((prev) => ({
                             ...prev,
                             [branch.id]: selectedFile,
-                          }))
-                        }
+                          }));
+                        }}
                       />
 
                       {image && (

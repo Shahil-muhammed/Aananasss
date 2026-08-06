@@ -14,6 +14,9 @@ import {
   updateLocationsHero,
 } from "@/lib/admin/locations";
 
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 interface Props {
   initialHero: LocationsHeroFormData;
 }
@@ -47,6 +50,25 @@ export default function HeroForm({ initialHero }: Props) {
     }));
   };
 
+  const handleFileSelect = (selectedFile: File | null) => {
+    if (!selectedFile) {
+      setFile(null);
+      return;
+    }
+
+    // Validate file size limit (1 MB)
+    if (selectedFile.size > MAX_FILE_SIZE_BYTES) {
+      const fileSizeInMB = (selectedFile.size / (1024 * 1024)).toFixed(2);
+      alert(
+        `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit. Selected file is ${fileSizeInMB} MB. Please select a smaller file.`
+      );
+      setFile(null);
+      return;
+    }
+
+    setFile(selectedFile);
+  };
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -61,9 +83,28 @@ export default function HeroForm({ initialHero }: Props) {
       setFile(null);
       alert("Locations hero updated successfully.");
       window.location.reload();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      alert("Failed to update hero.");
+
+      let message = "Failed to update hero.";
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === "string") {
+        message = error;
+      } else if (error && typeof error === "object") {
+        message = JSON.stringify(error);
+      }
+
+      // Handle Next.js body payload size limit errors
+      if (
+        message.includes("Body exceeded 1 MB limit") ||
+        message.includes("body size limit")
+      ) {
+        alert("Failed to save: Payload size exceeds the 1 MB limit. Please upload a smaller image.");
+      } else {
+        alert(`Failed to update hero: ${message}`);
+      }
     } finally {
       setSaving(false);
     }
@@ -153,7 +194,7 @@ export default function HeroForm({ initialHero }: Props) {
             <FileUpload
               label="Background Image"
               accept="image/*"
-              onChange={(selectedFile) => setFile(selectedFile)}
+              onChange={handleFileSelect}
             />
 
             {imageSrc && (

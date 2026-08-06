@@ -17,6 +17,9 @@ import {
 
 const supabase = createClient();
 
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 interface Props {
   hero: MenuHeroFormData;
 }
@@ -70,6 +73,16 @@ export default function HeroForm({ hero }: Props) {
 
     if (!file) return;
 
+    // Check if file size exceeds 1 MB limit
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+      alert(
+        `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit. Selected file is ${fileSizeInMB} MB. Please select a smaller file.`
+      );
+      e.target.value = ""; // Clear file selection
+      return;
+    }
+
     if (preview.startsWith("blob:")) {
       URL.revokeObjectURL(preview);
     }
@@ -104,14 +117,28 @@ export default function HeroForm({ hero }: Props) {
       setSelectedFile(null);
 
       alert("Saved successfully.");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to save.");
+
+      const errorMessage =
+        error?.message ||
+        error?.error_description ||
+        (typeof error === "string" ? error : JSON.stringify(error));
+
+      if (
+        errorMessage?.includes("Body exceeded 1 MB limit") ||
+        errorMessage?.includes("body size limit")
+      ) {
+        alert("Failed to save: Payload size exceeds the 1 MB size limit. Please upload a smaller image or video.");
+      } else {
+        alert("Failed to save: " + errorMessage);
+      }
     } finally {
       setLoading(false);
     }
   };
-    return (
+
+  return (
     <Card>
       <SectionTitle title="Menu Hero" />
 
