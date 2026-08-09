@@ -85,20 +85,35 @@ export async function getLocations() {
       .map((bp) => platformMap.get(bp.platform_id))
       .filter((item): item is { en: string; ar: string } => Boolean(item));
 
-    // Safety checks for googleMaps fallback logic
-    const hasGoogleUrl =
-      location.google_maps_url && location.google_maps_url.trim() !== "";
-
+    // Shared coordinates validator
     const hasValidCoords =
       location.latitude !== null &&
       location.longitude !== null &&
       (location.latitude !== 0 || location.longitude !== 0);
+
+    // Google Maps URL fallback logic
+    const hasGoogleUrl =
+      location.google_maps_url && location.google_maps_url.trim() !== "";
 
     const googleMapsUrl = hasGoogleUrl
       ? location.google_maps_url.trim()
       : hasValidCoords
       ? `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          location.name_en || ""
+        )}`;
+
+    // Apple Maps URL fallback logic
+    const hasAppleUrl =
+      location.apple_maps_url && location.apple_maps_url.trim() !== "";
+
+    const appleMapsUrl = hasAppleUrl
+      ? location.apple_maps_url.trim()
+      : hasValidCoords
+      ? `https://maps.apple.com/?ll=${location.latitude},${location.longitude}&q=${encodeURIComponent(
+          location.name_en || ""
+        )}`
+      : `https://maps.apple.com/?q=${encodeURIComponent(
           location.name_en || ""
         )}`;
 
@@ -136,6 +151,7 @@ export async function getLocations() {
       },
 
       googleMaps: googleMapsUrl,
+      appleMaps: appleMapsUrl,
     };
   });
 }

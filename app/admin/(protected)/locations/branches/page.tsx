@@ -73,11 +73,8 @@ export default async function LocationsBranchesPage() {
       workingHoursEn: branch.working_hours_en,
       workingHoursAr: branch.working_hours_ar,
 
-      customerServiceHoursEn:
-        branch.customer_service_hours_en,
-
-      customerServiceHoursAr:
-        branch.customer_service_hours_ar,
+      customerServiceHoursEn: branch.customer_service_hours_en,
+      customerServiceHoursAr: branch.customer_service_hours_ar,
 
       tagEn: branch.tag_en,
       tagAr: branch.tag_ar,
@@ -92,6 +89,9 @@ export default async function LocationsBranchesPage() {
       longitude: branch.longitude,
 
       googleMapsUrl: branch.google_maps_url,
+
+      // 🔴 THIS WAS MISSING BEFORE:
+      appleMapsUrl: branch.apple_maps_url ?? "",
 
       displayOrder: branch.display_order,
 

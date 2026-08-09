@@ -43,4 +43,6 @@ export interface Location {
   coords: LocationCoords;
 
   googleMaps: string;
+
+  appleMaps?: string;
 }

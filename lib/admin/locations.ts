@@ -118,6 +118,8 @@ export interface BranchFormData {
 
   googleMapsUrl: string;
 
+  appleMapsUrl: string;
+
   displayOrder: number;
 
   isActive: boolean;
@@ -127,45 +129,123 @@ export interface BranchFormData {
   deliveryPlatforms: number[];
 }
 
+export async function getAdminBranches(): Promise<BranchFormData[]> {
+  const supabase = await createClient();
+
+  const { data: locations, error: locationsError } = await supabase
+    .from("locations")
+    .select("*")
+    .order("display_order");
+
+  if (locationsError || !locations) {
+    console.error("Error fetching admin locations:", locationsError);
+    return [];
+  }
+
+  const [{ data: branchFeatures }, { data: branchPlatforms }] = await Promise.all([
+    supabase.from("branch_features").select("*"),
+    supabase.from("branch_delivery_platforms").select("*"),
+  ]);
+
+  return locations.map((loc) => {
+    let imageUrl = "";
+
+    if (loc.image) {
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("website-assets").getPublicUrl(loc.image);
+
+      const cacheKey = loc.updated_at
+        ? new Date(loc.updated_at).getTime()
+        : Date.now();
+
+      imageUrl = `${publicUrl}?v=${cacheKey}`;
+    }
+
+    return {
+      id: loc.id,
+      slug: loc.slug ?? "",
+
+      nameEn: loc.name_en ?? "",
+      nameAr: loc.name_ar ?? "",
+
+      addressEn: loc.address_en ?? "",
+      addressAr: loc.address_ar ?? "",
+
+      workingHoursEn: loc.working_hours_en ?? "",
+      workingHoursAr: loc.working_hours_ar ?? "",
+
+      customerServiceHoursEn: loc.customer_service_hours_en ?? "",
+      customerServiceHoursAr: loc.customer_service_hours_ar ?? "",
+
+      tagEn: loc.tag_en ?? "",
+      tagAr: loc.tag_ar ?? "",
+
+      noteEn: loc.note_en ?? "",
+      noteAr: loc.note_ar ?? "",
+
+      image: loc.image ?? "",
+      imageUrl,
+
+      latitude: loc.latitude ?? 0,
+      longitude: loc.longitude ?? 0,
+
+      googleMapsUrl: loc.google_maps_url ?? "",
+      appleMapsUrl: loc.apple_maps_url ?? "",
+
+      displayOrder: loc.display_order ?? 0,
+      isActive: loc.is_active ?? true,
+
+      features: (branchFeatures || [])
+        .filter((bf) => bf.location_id === loc.id)
+        .map((bf) => bf.feature_id),
+
+      deliveryPlatforms: (branchPlatforms || [])
+        .filter((bp) => bp.location_id === loc.id)
+        .map((bp) => bp.platform_id),
+    };
+  });
+}
+
 export async function createBranch() {
   const supabase = await createClient();
 
   const slug = `branch-${Date.now()}`;
 
-  const { error } = await supabase
-    .from("locations")
-    .insert({
-      slug,
+  const { error } = await supabase.from("locations").insert({
+    slug,
 
-      name_en: "New Branch",
-      name_ar: "فرع جديد",
+    name_en: "New Branch",
+    name_ar: "فرع جديد",
 
-      address_en: "",
-      address_ar: "",
+    address_en: "",
+    address_ar: "",
 
-      working_hours_en: "7:00 AM - 12:00 AM",
-      working_hours_ar: "٧:٠0 صباحاً - ١٢:٠٠ منتصف الليل",
+    working_hours_en: "7:00 AM - 12:00 AM",
+    working_hours_ar: "٧:٠0 صباحاً - ١٢:٠٠ منتصف الليل",
 
-      customer_service_hours_en: "7:00 AM - 12:00 AM",
-      customer_service_hours_ar: "٧:٠٠ صباحاً - ١٢:٠٠ منتصف الليل",
+    customer_service_hours_en: "7:00 AM - 12:00 AM",
+    customer_service_hours_ar: "٧:٠٠ صباحاً - ١٢:٠٠ منتصف الليل",
 
-      tag_en: "",
-      tag_ar: "",
+    tag_en: "",
+    tag_ar: "",
 
-      note_en: "",
-      note_ar: "",
+    note_en: "",
+    note_ar: "",
 
-      image: "",
+    image: "",
 
-      latitude: 0,
-      longitude: 0,
+    latitude: 0,
+    longitude: 0,
 
-      google_maps_url: "",
+    google_maps_url: "",
 
-      display_order: 0,
+    apple_maps_url: "",
 
-      is_active: true,
-    });
+    display_order: 0,
+
+    is_active: true,
+  });
 
   if (error) {
     throw error;
@@ -211,11 +291,9 @@ export async function updateBranch(
       working_hours_en: branch.workingHoursEn,
       working_hours_ar: branch.workingHoursAr,
 
-      customer_service_hours_en:
-        branch.customerServiceHoursEn,
+      customer_service_hours_en: branch.customerServiceHoursEn,
 
-      customer_service_hours_ar:
-        branch.customerServiceHoursAr,
+      customer_service_hours_ar: branch.customerServiceHoursAr,
 
       tag_en: branch.tagEn,
       tag_ar: branch.tagAr,
@@ -230,6 +308,8 @@ export async function updateBranch(
 
       google_maps_url: branch.googleMapsUrl,
 
+      apple_maps_url: branch.appleMapsUrl,
+
       display_order: branch.displayOrder,
 
       is_active: branch.isActive,
@@ -243,31 +323,20 @@ export async function updateBranch(
   }
 
   if (branch.features) {
-    await saveBranchFeatures(
-      branch.id,
-      branch.features
-    );
+    await saveBranchFeatures(branch.id, branch.features);
   }
 
   if (branch.deliveryPlatforms) {
-    await saveBranchDeliveryPlatforms(
-      branch.id,
-      branch.deliveryPlatforms
-    );
+    await saveBranchDeliveryPlatforms(branch.id, branch.deliveryPlatforms);
   }
 
   return image;
 }
 
-export async function deleteBranch(
-  id: number
-) {
+export async function deleteBranch(id: number) {
   const supabase = await createClient();
 
-  const { error } = await supabase
-    .from("locations")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("locations").delete().eq("id", id);
 
   if (error) {
     throw error;
@@ -295,26 +364,22 @@ export async function createFeature() {
 
   const code = `FEATURE-${Date.now()}`;
 
-  const { error } = await supabase
-    .from("location_features")
-    .insert({
-      code,
+  const { error } = await supabase.from("location_features").insert({
+    code,
 
-      name_en: "New Feature",
+    name_en: "New Feature",
 
-      name_ar: "ميزة جديدة",
+    name_ar: "ميزة جديدة",
 
-      icon: "",
-    });
+    icon: "",
+  });
 
   if (error) {
     throw error;
   }
 }
 
-export async function updateFeature(
-  feature: FeatureFormData
-) {
+export async function updateFeature(feature: FeatureFormData) {
   const supabase = await createClient();
 
   const { error } = await supabase
@@ -337,9 +402,7 @@ export async function updateFeature(
   }
 }
 
-export async function deleteFeature(
-  id: number
-) {
+export async function deleteFeature(id: number) {
   const supabase = await createClient();
 
   const { count } = await supabase
@@ -384,17 +447,15 @@ export async function createDeliveryPlatform() {
 
   const code = `PLATFORM-${Date.now()}`;
 
-  const { error } = await supabase
-    .from("delivery_platforms")
-    .insert({
-      code,
+  const { error } = await supabase.from("delivery_platforms").insert({
+    code,
 
-      name: "New Platform",
+    name: "New Platform",
 
-      name_ar: "منصة جديدة",
+    name_ar: "منصة جديدة",
 
-      icon: "",
-    });
+    icon: "",
+  });
 
   if (error) {
     throw error;
@@ -426,9 +487,7 @@ export async function updateDeliveryPlatform(
   }
 }
 
-export async function deleteDeliveryPlatform(
-  id: number
-) {
+export async function deleteDeliveryPlatform(id: number) {
   const supabase = await createClient();
 
   const { count } = await supabase

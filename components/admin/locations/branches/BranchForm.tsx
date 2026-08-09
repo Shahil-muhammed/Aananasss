@@ -356,6 +356,14 @@ export default function BranchForm({
                         updateField(branch.id, "googleMapsUrl", e.target.value)
                       }
                     />
+
+                    <Input
+                      label="Apple Maps URL"
+                      value={branch.appleMapsUrl ?? ""}
+                      onChange={(e) =>
+                        updateField(branch.id, "appleMapsUrl", e.target.value)
+                      }
+                    />
                   </div>
 
                   {/* Textarea Fields Section */}

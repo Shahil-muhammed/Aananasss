@@ -93,14 +93,6 @@ export default function MenuSection({ section, onSelectItem }: Props) {
                       <span className="text-xs font-mono tracking-wider text-black/70 uppercase">
                         {item.kcal} KCAL
                       </span>
-                      {item.price && (
-                        <div
-                          className="mt-1 text-lg font-semibold"
-                          style={{ color: section.accentColor }}
-                        >
-                          KD {item.price.toFixed(3)}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </article>

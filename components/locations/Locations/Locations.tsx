@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
 
 import { Location } from "./locations.types";
@@ -35,6 +35,24 @@ export default function Locations({ locations }: Props) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  /**
+   * Helper function to safely parse text containing literal "<br>" or "<br/>" strings
+   * and convert them into React <br /> components.
+   */
+  const renderFormattedText = (text?: string) => {
+    if (!text) return null;
+
+    // Split string by <br>, <br/>, or <br /> case-insensitively
+    const parts = text.split(/<br\s*\/?>/gi);
+
+    return parts.map((part, index) => (
+      <React.Fragment key={index}>
+        {part}
+        {index < parts.length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
 
   const rows = [];
 
@@ -104,11 +122,12 @@ export default function Locations({ locations }: Props) {
                               : location.name}
                           </h3>
 
-                          <p className="mt-0.5 text-[9px] sm:text-xs opacity-75 truncate">
-                            {isArabic
-                              ? location.hours_ar
-                              : location.hours}
-                          </p>
+                          {/* Render hours with line breaks on cards */}
+                          <div className="mt-0.5 text-[9px] sm:text-xs opacity-75 line-clamp-2 leading-tight">
+                            {renderFormattedText(
+                              isArabic ? location.hours_ar : location.hours
+                            )}
+                          </div>
                         </div>
                       </div>
                     </button>
@@ -221,11 +240,13 @@ export default function Locations({ locations }: Props) {
                             {isArabic ? "العنوان" : "Address"}
                           </span>
 
-                          <p className="mt-0.5 font-light">
-                            {isArabic
-                              ? selectedLocation.addr_ar
-                              : selectedLocation.addr}
-                          </p>
+                          <div className="mt-0.5 font-light leading-relaxed">
+                            {renderFormattedText(
+                              isArabic
+                                ? selectedLocation.addr_ar
+                                : selectedLocation.addr
+                            )}
+                          </div>
                         </div>
 
                         <div>
@@ -233,35 +254,59 @@ export default function Locations({ locations }: Props) {
                             {isArabic ? "أوقات العمل" : "Hours"}
                           </span>
 
-                          <p className="mt-0.5 font-light">
-                            {isArabic
-                              ? selectedLocation.hours_ar
-                              : selectedLocation.hours}
-                          </p>
+                          <div className="mt-0.5 font-light leading-relaxed">
+                            {renderFormattedText(
+                              isArabic
+                                ? selectedLocation.hours_ar
+                                : selectedLocation.hours
+                            )}
+                          </div>
                         </div>
                       </div>
 
-                      <p className="mt-4 sm:mt-5 text-xs sm:text-sm leading-relaxed text-white/70 font-light">
-                        {isArabic
-                          ? selectedLocation.note.ar
-                          : selectedLocation.note.en}
-                      </p>
+                      <div className="mt-4 sm:mt-5 text-xs sm:text-sm leading-relaxed text-white/70 font-light">
+                        {renderFormattedText(
+                          isArabic
+                            ? selectedLocation.note.ar
+                            : selectedLocation.note.en
+                        )}
+                      </div>
 
-                      <a
-                        href={
-                          selectedLocation.googleMaps?.trim()
-                            ? selectedLocation.googleMaps
-                            : selectedLocation.coords?.lat !== 0 &&
-                              selectedLocation.coords?.lng !== 0
-                            ? `https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.coords.lat},${selectedLocation.coords.lng}`
-                            : "#"
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-6 sm:mt-8 inline-flex items-center gap-2 bg-[#E4E47A] px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-white"
-                      >
-                        {isArabic ? "الاتجاهات" : "Get Directions"} →
-                      </a>
+                      <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+                        <a
+                          href={
+                            selectedLocation.googleMaps?.trim()
+                              ? selectedLocation.googleMaps
+                              : selectedLocation.coords?.lat !== 0 &&
+                                selectedLocation.coords?.lng !== 0
+                              ? `https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.coords.lat},${selectedLocation.coords.lng}`
+                              : "#"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-[#E4E47A] px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-white"
+                        >
+                          {isArabic ? "خرائط جوجل" : "Google Maps"} →
+                        </a>
+
+                        <a
+                          href={
+                            selectedLocation.appleMaps?.trim()
+                              ? selectedLocation.appleMaps
+                              : selectedLocation.coords?.lat !== 0 &&
+                                selectedLocation.coords?.lng !== 0
+                              ? `https://maps.apple.com/?ll=${selectedLocation.coords.lat},${selectedLocation.coords.lng}&q=${encodeURIComponent(
+                                  selectedLocation.name || ""
+                                )}`
+                              : "#"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 border border-white/20 bg-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-black"
+                        >
+                          {isArabic ? "خرائط أبل" : "Apple Maps"} →
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
