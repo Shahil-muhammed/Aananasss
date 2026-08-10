@@ -8,9 +8,7 @@ import MenuSection from "@/components/menu/MenuSection";
 import ItemModal from "@/components/menu/ItemModal";
 import IngredientOrigins from "@/components/menu/IngredientOrigins";
 
-import {
-  MenuHeroData,
-} from "@/components/menu/Hero/hero.types";
+import { MenuHeroData } from "@/components/menu/Hero/hero.types";
 
 import {
   MenuItem,
@@ -38,13 +36,6 @@ export default function MenuPageClient({
   const [selectedSection, setSelectedSection] =
     useState<MenuSectionData | null>(null);
 
-  const filteredSections =
-    activeCategory === "all"
-      ? sections
-      : sections.filter(
-          (section) => section.id === activeCategory
-        );
-
   const handleSelectItem = (
     item: MenuItem,
     section: MenuSectionData
@@ -64,21 +55,31 @@ export default function MenuPageClient({
 
       <CategoryNavigation
         categories={sections.map((section) => ({
-            id: section.id,
-            titleEn: section.titleEn,
-            titleAr: section.titleAr,
+          id: section.id,
+          titleEn: section.titleEn,
+          titleAr: section.titleAr,
         }))}
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
       />
 
       <div className="flex flex-col">
-        {filteredSections.map((section) => (
-          <MenuSection
+        {sections.map((section) => (
+          <div
             key={section.id}
-            section={section}
-            onSelectItem={handleSelectItem}
-          />
+            id={section.id}
+            className={
+              activeCategory === "all" ||
+              activeCategory === section.id
+                ? "block"
+                : "hidden"
+            }
+          >
+            <MenuSection
+              section={section}
+              onSelectItem={handleSelectItem}
+            />
+          </div>
         ))}
       </div>
 

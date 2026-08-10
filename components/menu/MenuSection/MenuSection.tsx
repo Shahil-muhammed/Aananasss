@@ -18,7 +18,7 @@ export default function MenuSection({ section, onSelectItem }: Props) {
     <section
       id={section.id}
       style={{ backgroundColor: section.backgroundColor }}
-      className="relative py-20 overflow-hidden"
+      className="relative scroll-mt-24 py-20 overflow-hidden sm:scroll-mt-28"
     >
       <div 
         className="pointer-events-none absolute inset-0 opacity-25"
@@ -83,8 +83,8 @@ export default function MenuSection({ section, onSelectItem }: Props) {
                       </p>
 
                       <div className="mt-4 flex gap-5 text-[11px] font-mono tracking-widest text-black/60 uppercase">
-                        <span>P {item.protein}</span>
                         <span>C {item.carbs}</span>
+                        <span>P {item.protein}</span>
                         <span>F {item.fat}</span>
                       </div>
                     </div>

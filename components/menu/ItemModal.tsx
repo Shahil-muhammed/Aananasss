@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { MenuItem, MenuSectionData } from "./MenuSection/menuSection.types";
@@ -17,6 +18,29 @@ export default function ItemModal({
 }: ItemModalProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
+  const previousScrollY = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    if (!item || !section) {
+      return;
+    }
+
+    previousScrollY.current = window.scrollY;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+
+      if (previousScrollY.current !== null) {
+        window.scrollTo({
+          top: previousScrollY.current,
+          behavior: "auto",
+        });
+      }
+    };
+  }, [item, section]);
 
   if (!item || !section) return null;
 
@@ -40,6 +64,8 @@ export default function ItemModal({
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         className="relative w-full max-w-5xl rounded-3xl p-6 sm:p-10 lg:p-14 shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] overflow-y-auto"
         style={{ backgroundColor: section.backgroundColor }}
         onClick={(e) => e.stopPropagation()}
@@ -135,21 +161,21 @@ export default function ItemModal({
 
                 <div>
                   <div className="text-2xl sm:text-3xl font-serif italic text-[#C68032]">
-                    {item.protein}
-                  </div>
-
-                  <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
-                    PROTEIN
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-2xl sm:text-3xl font-serif italic text-[#C68032]">
                     {item.carbs}
                   </div>
 
                   <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
                     CARBS
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-2xl sm:text-3xl font-serif italic text-[#C68032]">
+                    {item.protein}
+                  </div>
+
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
+                    PROTEIN
                   </div>
                 </div>
 

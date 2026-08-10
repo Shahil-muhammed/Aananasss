@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useLocale } from "next-intl";
 
 interface Category {
@@ -23,7 +23,7 @@ export default function CategoryNavigation({
   const locale = useLocale();
   const isArabic = locale === "ar";
 
-  const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const hasScrolledOnMount = useRef(false);
 
   const allCategories: Category[] = [
     {
@@ -34,45 +34,57 @@ export default function CategoryNavigation({
     ...categories,
   ];
 
+  useLayoutEffect(() => {
+    if (!hasScrolledOnMount.current) {
+      hasScrolledOnMount.current = true;
+      return;
+    }
+
+    if (activeCategory === "all") {
+      return;
+    }
+
+    const section = document.getElementById(activeCategory);
+
+    if (!section) {
+      return;
+    }
+
+    const stickyOffset = 96;
+    const top = window.scrollY + section.getBoundingClientRect().top - stickyOffset;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth",
+    });
+  }, [activeCategory]);
+
   const scrollToSection = (id: string) => {
     onSelectCategory(id);
-
-    const activeBtn = buttonRefs.current[id];
-
-    if (activeBtn) {
-      activeBtn.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-
-    if (id !== "all") {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: "smooth",
-      });
-    } else {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
   };
 
   const scrollToIngredientOrigins = () => {
-    document.getElementById("ingredient-origins")?.scrollIntoView({
+    const section = document.getElementById("ingredient-origins");
+
+    if (!section) {
+      return;
+    }
+
+    const stickyOffset = 96;
+    const top = window.scrollY + section.getBoundingClientRect().top - stickyOffset;
+
+    window.scrollTo({
+      top: Math.max(0, top),
       behavior: "smooth",
-      block: "start",
     });
   };
 
   return (
-    <section className="sticky top-0 z-40 bg-[#dbe868] py-4">
-      <div className="relative mx-auto max-w-[1400px] px-6">
+    <section className="sticky top-0 z-40 bg-[#dbe868] py-3.5">
+      <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         <div
           className="
-            flex flex-wrap items-center justify-center gap-x-2 gap-y-2.5
-            px-4 sm:px-16
+            flex flex-wrap items-center justify-center gap-1.5 sm:gap-2
             [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           "
         >
@@ -82,15 +94,12 @@ export default function CategoryNavigation({
             return (
               <button
                 key={category.id}
-                ref={(el) => {
-                  buttonRefs.current[category.id] = el;
-                }}
                 type="button"
                 aria-current={isActive ? "true" : undefined}
                 onClick={() => scrollToSection(category.id)}
                 className={`
-                  snap-start whitespace-nowrap px-4 py-1.5
-                  rounded-full text-[11px] font-semibold tracking-[0.18em] uppercase
+                  snap-start whitespace-nowrap px-3.5 py-1 sm:px-4 sm:py-1.5
+                  rounded-full text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] sm:tracking-[0.18em] uppercase
                   transition-all duration-200
                   shrink-0 active:scale-95 touch-manipulation
                   ${
@@ -104,27 +113,18 @@ export default function CategoryNavigation({
               </button>
             );
           })}
-        </div>
 
-        {/* Floating SOURCING Button matching image position */}
-        <div className="mt-2 flex justify-end sm:absolute sm:right-6 sm:bottom-0 sm:mt-0">
+          {/* SOURCING Button placed directly inline inside the wrapped flex flow */}
           <button
             type="button"
             onClick={scrollToIngredientOrigins}
             className="
-              shrink-0
-              rounded-full
-              bg-[#34401a]
-              px-5
-              py-1.5
-              text-[11px]
-              font-semibold
-              tracking-[0.18em]
-              text-[#dbe868]
-              transition-all
+              snap-start whitespace-nowrap px-4 py-1 sm:px-5 sm:py-1.5
+              rounded-full text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] sm:tracking-[0.18em] uppercase
+              transition-all duration-200
+              shrink-0 active:scale-95 touch-manipulation
+              bg-[#34401a] text-[#dbe868] border border-[#34401a]
               hover:opacity-95
-              active:scale-95
-              border border-[#34401a]
             "
           >
             {isArabic ? "التوريد ↓" : "SOURCING ↓"}
