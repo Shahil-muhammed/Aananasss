@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 
 import { Location } from "./locations.types";
@@ -9,10 +10,64 @@ interface Props {
   locations: Location[];
 }
 
+const normalizeLocationValue = (value?: string | null) =>
+  value
+    ?.normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, " ")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "") ?? "";
+
+const findMatchingLocationId = (
+  list: Location[],
+  branchQuery: string | null
+) => {
+  const normalizedBranchQuery = normalizeLocationValue(branchQuery);
+
+  if (!normalizedBranchQuery) {
+    return null;
+  }
+
+  const directMatch = list.find(
+    (location) => normalizeLocationValue(location.id) === normalizedBranchQuery
+  );
+
+  if (directMatch) {
+    return directMatch.id;
+  }
+
+  const nameMatch = list.find(
+    (location) =>
+      normalizeLocationValue(location.name) === normalizedBranchQuery ||
+      normalizeLocationValue(location.name_ar) === normalizedBranchQuery
+  );
+
+  if (nameMatch) {
+    return nameMatch.id;
+  }
+
+  const addressMatch = list.find(
+    (location) =>
+      normalizeLocationValue(location.addr) === normalizedBranchQuery ||
+      normalizeLocationValue(location.addr_ar) === normalizedBranchQuery
+  );
+
+  if (addressMatch) {
+    return addressMatch.id;
+  }
+
+  return null;
+};
+
 export default function Locations({ locations }: Props) {
   const locale = useLocale();
+  const searchParams = useSearchParams();
 
   const isArabic = locale === "ar";
+  const branchQuery = searchParams.get("branch");
 
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(
     locations[0]?.id || null
@@ -35,6 +90,34 @@ export default function Locations({ locations }: Props) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!branchQuery) {
+      setSelectedLocationId(locations[0]?.id || null);
+      return;
+    }
+
+    const matchedLocationId = findMatchingLocationId(locations, branchQuery);
+
+    setSelectedLocationId(matchedLocationId ?? null);
+  }, [branchQuery, locations]);
+
+  useEffect(() => {
+    if (!branchQuery || !selectedLocationId) {
+      return;
+    }
+
+    const detailsPanel = document.getElementById(
+      `location-details-${selectedLocationId}`
+    );
+
+    if (detailsPanel) {
+      detailsPanel.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [branchQuery, selectedLocationId]);
 
   /**
    * Helper function to safely parse text containing literal "<br>" or "<br/>" strings
@@ -137,7 +220,10 @@ export default function Locations({ locations }: Props) {
 
               {/* Expanded Details Panel */}
               {isSelectedInThisRow && selectedLocation && (
-                <div className="relative bg-[#3B4823] p-5 text-white sm:p-8 md:p-10 shadow-2xl transition-all">
+                <div
+                  id={`location-details-${selectedLocation.id}`}
+                  className="relative bg-[#3B4823] p-5 text-white sm:p-8 md:p-10 shadow-2xl transition-all"
+                >
                   <button
                     onClick={() => setSelectedLocationId(null)}
                     className="absolute top-3 right-3 sm:top-4 sm:right-4 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs text-white hover:bg-white/20 transition-colors"

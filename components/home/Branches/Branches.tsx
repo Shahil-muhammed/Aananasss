@@ -58,6 +58,34 @@ import { BranchesData } from "./branches.types";
     };
   }, [isArabic]);
 
+  const normalizeBranchValue = (value?: string | null) =>
+    value
+      ?.normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, " ")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") ?? "";
+
+  const getBranchLocationHref = (branch: (typeof data.branches)[number]) => {
+    const branchIdentifier = [
+      branch.titleEn,
+      branch.titleAr,
+      branch.locationEn,
+      branch.locationAr,
+    ]
+      .map(normalizeBranchValue)
+      .find(Boolean);
+
+    if (!branchIdentifier) {
+      return "/locations";
+    }
+
+    return `/locations?branch=${encodeURIComponent(branchIdentifier)}`;
+  };
+
   const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
       const { clientWidth } = sliderRef.current;
@@ -201,7 +229,7 @@ import { BranchesData } from "./branches.types";
               className="w-full lg:w-auto flex-shrink-0 snap-center lg:snap-start px-2 lg:px-0"
             >
               <Link
-                href={branch.href}
+                href={getBranchLocationHref(branch)}
                 className="group block relative overflow-hidden bg-[#e9dfc6] rounded-sm transition-transform duration-300"
               >
                 {/* Image Container with Portrait Aspect Box */}
