@@ -51,6 +51,9 @@ export async function getBranches(): Promise<BranchesData> {
         locationEn: branch.location_en,
         locationAr: branch.location_ar,
 
+        badgeLabelEn: branch.badge_label_en, // <-- Added here
+        badgeLabelAr: branch.badge_label_ar, // <-- Added here
+
         image: `${publicUrl}?v=${branch.updated_at}`,
 
         href: branch.href,

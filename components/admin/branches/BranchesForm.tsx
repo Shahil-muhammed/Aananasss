@@ -39,6 +39,9 @@ interface Branch {
   locationEn: string;
   locationAr: string;
 
+  badgeLabelEn: string;
+  badgeLabelAr: string;
+
   imagePath: string;
   imageUrl: string;
 
@@ -102,6 +105,9 @@ export default function BranchesForm({
 
         locationEn: newBranch.location_en,
         locationAr: newBranch.location_ar,
+
+        badgeLabelEn: newBranch.badge_label_en || "BRANCH",
+        badgeLabelAr: newBranch.badge_label_ar || "فرع",
 
         imagePath: newBranch.image || "",
 

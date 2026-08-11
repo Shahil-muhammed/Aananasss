@@ -57,6 +57,12 @@ export function transformMenuSections(
         captionEn: item.captionEn,
         captionAr: item.captionAr,
 
+        originEn: item.originEn,
+        originAr: item.originAr,
+
+        disclaimerEn: item.disclaimerEn,
+        disclaimerAr: item.disclaimerAr,
+
         image: item.image,
 
         protein: item.protein,

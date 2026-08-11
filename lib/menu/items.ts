@@ -70,6 +70,12 @@ export async function getMenuItems(): Promise<
       captionEn: item.caption_en ?? "",
       captionAr: item.caption_ar ?? "",
 
+      // NEW MAPS HERE
+      originEn: item.origin_en ?? "",
+      originAr: item.origin_ar ?? "",
+      disclaimerEn: item.disclaimer_en ?? "",
+      disclaimerAr: item.disclaimer_ar ?? "",
+
       image,
 
       protein: item.protein?.toString() ?? "",

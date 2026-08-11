@@ -283,6 +283,32 @@ export default function MenuItemCard({
             onChange={(e) => update("descriptionAr", e.target.value)}
           />
 
+          <Input
+            label="Origin EN"
+            value={form.originEn}
+            onChange={(e) => update("originEn", e.target.value)}
+          />
+
+          <Input
+            label="Origin AR"
+            value={form.originAr}
+            onChange={(e) => update("originAr", e.target.value)}
+          />
+
+          <Textarea
+            label="Disclaimer EN"
+            rows={2}
+            value={form.disclaimerEn}
+            onChange={(e) => update("disclaimerEn", e.target.value)}
+          />
+
+          <Textarea
+            label="Disclaimer AR"
+            rows={2}
+            value={form.disclaimerAr}
+            onChange={(e) => update("disclaimerAr", e.target.value)}
+          />
+
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Protein"

@@ -16,6 +16,12 @@ export type MenuItem = {
   captionEn: string;
   captionAr: string;
 
+  originEn?: string;
+  originAr?: string;
+
+  disclaimerEn?: string;
+  disclaimerAr?: string;
+
   image: string;
 
   protein: string;

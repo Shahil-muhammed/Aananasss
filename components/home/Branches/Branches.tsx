@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRef, useState, useEffect } from "react";
@@ -9,11 +8,11 @@ import { useLocale } from "next-intl";
 
 import { BranchesData } from "./branches.types";
 
-  interface BranchesProps {
-    data: BranchesData;
-  }
+interface BranchesProps {
+  data: BranchesData;
+}
 
-  export default function Branches({ data }: BranchesProps) {
+export default function Branches({ data }: BranchesProps) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
@@ -246,10 +245,10 @@ import { BranchesData } from "./branches.types";
                   {/* Dark Vignette Overlay Blend Mode */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
 
-                  {/* Top Subtle Label Badge Info Indicator */}
+                  {/* Dynamic Badge Info Indicator from Supabase */}
                   <div className={`absolute top-4 ${isArabic ? "left-4" : "right-4"} bg-black/20 backdrop-blur-[2px] px-2.5 py-1 rounded-[2px]`}>
                     <span className="text-[9px] text-white/70 font-sans tracking-widest uppercase block">
-                      {isArabic ? "فرع" : "BRANCH"}
+                      {isArabic ? branch.badgeLabelAr : branch.badgeLabelEn}
                     </span>
                   </div>
 

@@ -11,6 +11,9 @@ interface BranchForm {
   locationEn: string;
   locationAr: string;
 
+  badgeLabelEn: string; // <-- Added here
+  badgeLabelAr: string; // <-- Added here
+
   imagePath: string;
 
   href: string;
@@ -79,6 +82,9 @@ export async function updateBranch(
       location_en: form.locationEn,
       location_ar: form.locationAr,
 
+      badge_label_en: form.badgeLabelEn, // <-- Added here
+      badge_label_ar: form.badgeLabelAr, // <-- Added here
+
       image: imagePath,
 
       href: form.href,
@@ -141,6 +147,9 @@ export async function createBranch() {
 
       location_en: "",
       location_ar: "",
+
+      badge_label_en: "BRANCH", // <-- Default added here
+      badge_label_ar: "فرع",    // <-- Default added here
 
       image: "",
 

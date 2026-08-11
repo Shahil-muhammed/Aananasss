@@ -23,6 +23,9 @@ interface Branch {
   locationEn: string;
   locationAr: string;
 
+  badgeLabelEn: string;
+  badgeLabelAr: string;
+
   imagePath: string;
   imageUrl: string;
 
@@ -198,6 +201,22 @@ export default function BranchCard({
             value={form.locationAr}
             onChange={(e) =>
               update("locationAr", e.target.value)
+            }
+          />
+
+          <Input
+            label="Badge Label EN"
+            value={form.badgeLabelEn}
+            onChange={(e) =>
+              update("badgeLabelEn", e.target.value)
+            }
+          />
+
+          <Input
+            label="Badge Label AR"
+            value={form.badgeLabelAr}
+            onChange={(e) =>
+              update("badgeLabelAr", e.target.value)
             }
           />
 

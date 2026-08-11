@@ -47,6 +47,9 @@ export default async function BranchesPage() {
       locationEn: branch.location_en,
       locationAr: branch.location_ar,
 
+      badgeLabelEn: branch.badge_label_en || "BRANCH",
+      badgeLabelAr: branch.badge_label_ar || "فرع",
+
       imagePath: branch.image,
       imageUrl,
 

@@ -58,6 +58,15 @@ export default function ItemModal({
     ? item.captionAr
     : item.captionEn;
 
+  // FIX: Read directly from item props; fallback only if undefined/null
+  const itemOrigin = isArabic
+    ? item.originAr ?? ""
+    : item.originEn ?? "";
+
+  const itemDisclaimer = isArabic
+    ? item.disclaimerAr ?? ""
+    : item.disclaimerEn ?? "";
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/50 backdrop-blur-sm"
@@ -69,12 +78,15 @@ export default function ItemModal({
         className="relative w-full max-w-5xl rounded-3xl p-6 sm:p-10 lg:p-14 shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] overflow-y-auto"
         style={{ backgroundColor: section.backgroundColor }}
         onClick={(e) => e.stopPropagation()}
+        dir={isArabic ? "rtl" : "ltr"}
       >
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-xl text-black/70 hover:bg-black/10 transition-colors"
-          aria-label="Close modal"
+          className={`absolute top-6 ${
+            isArabic ? "left-6" : "right-6"
+          } z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-xl text-black/70 hover:bg-black/10 transition-colors`}
+          aria-label={isArabic ? "إغلاق النافذة" : "Close modal"}
         >
           ✕
         </button>
@@ -93,7 +105,7 @@ export default function ItemModal({
               />
             ) : (
               <span className="p-4 text-[10px] font-mono uppercase tracking-widest text-[#98A366]">
-                PHOTO COMING
+                {isArabic ? "الصورة قريباً" : "PHOTO COMING"}
               </span>
             )}
           </div>
@@ -140,22 +152,22 @@ export default function ItemModal({
 
             <div>
               <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/50 mb-3">
-                PER SERVING
+                {isArabic ? "لكل وجبة" : "PER SERVING"}
               </p>
 
-              <div className="grid grid-cols-4 gap-2 text-left">
+              <div className="grid grid-cols-4 gap-2">
 
                 <div>
                   <div className="text-2xl sm:text-3xl font-serif italic text-[#C68032]">
                     {item.kcal}
                     <span className="text-xs font-sans not-italic text-black/60">
                       {" "}
-                      kcal
+                      {isArabic ? "سعرة" : "kcal"}
                     </span>
                   </div>
 
                   <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
-                    CALORIES
+                    {isArabic ? "سعرات" : "CALORIES"}
                   </div>
                 </div>
 
@@ -165,7 +177,7 @@ export default function ItemModal({
                   </div>
 
                   <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
-                    CARBS
+                    {isArabic ? "كربوهيدرات" : "CARBS"}
                   </div>
                 </div>
 
@@ -175,7 +187,7 @@ export default function ItemModal({
                   </div>
 
                   <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
-                    PROTEIN
+                    {isArabic ? "بروتين" : "PROTEIN"}
                   </div>
                 </div>
 
@@ -185,7 +197,7 @@ export default function ItemModal({
                   </div>
 
                   <div className="text-[9px] font-mono uppercase tracking-wider text-black/50 mt-1">
-                    FAT
+                    {isArabic ? "دهون" : "FAT"}
                   </div>
                 </div>
 
@@ -194,28 +206,30 @@ export default function ItemModal({
 
             <hr className="border-black/10 my-6" />
 
-            {/* Origin & Allergens */}
+            {/* Dynamic Origin & Allergens */}
 
             <div className="space-y-4">
 
-              <div>
-                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/50 mb-1">
-                  ORIGIN
-                </p>
+              {itemOrigin && (
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/50 mb-1">
+                    {isArabic ? "المصدر" : "ORIGIN"}
+                  </p>
 
-                <p
-                  className="text-lg font-serif italic"
-                  style={{
-                    color: section.accentColor,
-                  }}
-                >
-                  Crafted in-house
-                </p>
-              </div>
+                  <p
+                    className="text-lg font-serif italic"
+                    style={{
+                      color: section.accentColor,
+                    }}
+                  >
+                    {itemOrigin}
+                  </p>
+                </div>
+              )}
 
               <div>
                 <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/50 mb-2">
-                  ALLERGENS
+                  {isArabic ? "مسببات الحساسية" : "ALLERGENS"}
                 </p>
 
                 {item.allergens.length > 0 ? (
@@ -239,14 +253,17 @@ export default function ItemModal({
                   </div>
                 ) : (
                   <span className="text-xs text-black/60 italic">
-                    None
+                    {isArabic ? "لا يوجد" : "None"}
                   </span>
                 )}
               </div>
 
-              <p className="text-[9px] font-mono uppercase tracking-widest text-black/40 pt-2">
-                INDICATIVE ONLY – CONFIRM WITH THE BAR
-              </p>
+              {/* Dynamic Disclaimer Notice */}
+              {itemDisclaimer && (
+                <p className="text-[9px] font-mono uppercase tracking-widest text-black/40 pt-2">
+                  {itemDisclaimer}
+                </p>
+              )}
 
             </div>
 

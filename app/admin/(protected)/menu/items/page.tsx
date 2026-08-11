@@ -68,6 +68,13 @@ export default async function MenuItemsPage() {
         descriptionEn: item.description_en ?? "",
         descriptionAr: item.description_ar ?? "",
 
+        // MAPPED NEW DB FIELDS
+        originEn: item.origin_en ?? "",
+        originAr: item.origin_ar ?? "",
+
+        disclaimerEn: item.disclaimer_en ?? "",
+        disclaimerAr: item.disclaimer_ar ?? "",
+
         image: item.image ?? "",
         imageUrl,
 

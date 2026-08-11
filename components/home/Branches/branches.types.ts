@@ -7,6 +7,9 @@ export interface Branch {
   locationEn: string;
   locationAr: string;
 
+  badgeLabelEn: string;
+  badgeLabelAr: string;
+
   image: string;
 
   href: string;

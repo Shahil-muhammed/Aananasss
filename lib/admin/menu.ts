@@ -241,6 +241,12 @@ export interface MenuItemFormData {
   descriptionEn: string;
   descriptionAr: string;
 
+  originEn: string;
+  originAr: string;
+
+  disclaimerEn: string;
+  disclaimerAr: string;
+
   image: string;
 
   protein: string;
@@ -280,6 +286,12 @@ export async function createMenuItem(categoryId: number) {
 
       description_en: "",
       description_ar: "",
+
+      origin_en: "Crafted in-house",
+      origin_ar: "صنع منزلياً",
+
+      disclaimer_en: "INDICATIVE ONLY – CONFIRM WITH THE BAR",
+      disclaimer_ar: "إرشادي فقط - يرجى التأكيد مع البار",
 
       image: "",
 
@@ -378,6 +390,12 @@ export async function updateMenuItem(
 
       description_en: item.descriptionEn,
       description_ar: item.descriptionAr,
+
+      origin_en: item.originEn,
+      origin_ar: item.originAr,
+
+      disclaimer_en: item.disclaimerEn,
+      disclaimer_ar: item.disclaimerAr,
 
       image: imagePath,
 
