@@ -1,9 +1,21 @@
 "use client";
 
+import { Playfair_Display, Inter } from "next/font/google";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 
 import { MenuItem, MenuSectionData } from "./menuSection.types";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["400", "500", "600"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 type Props = {
   section: MenuSectionData;
@@ -17,24 +29,25 @@ export default function MenuSection({ section, onSelectItem }: Props) {
   return (
     <section
       id={section.id}
-      style={{ backgroundColor: section.backgroundColor }}
-      className="relative scroll-mt-24 py-20 overflow-hidden sm:scroll-mt-28"
+      style={{ backgroundColor: section.backgroundColor || "#F7C5B8" }}
+      className="relative scroll-mt-24 overflow-hidden py-20 sm:scroll-mt-28"
     >
-      <div 
-        className="pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
-            linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: "20px 20px",
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 opacity-25">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "20px 20px",
+          }}
+        />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <div className="grid gap-14 lg:grid-cols-2 items-start">
-
+        <div className="grid items-start gap-14 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
             <div className="relative aspect-square overflow-hidden rounded-3xl shadow-sm">
               <Image
@@ -46,17 +59,18 @@ export default function MenuSection({ section, onSelectItem }: Props) {
             </div>
           </div>
 
-          <div className="order-1 lg:order-2 space-y-8">
+          <div className="order-1 space-y-8 lg:order-2">
             <div className="flex items-baseline gap-4 border-b border-black/10 pb-6">
               <span
-                className="text-6xl font-serif italic font-light"
-                style={{ color: section.accentColor }}
+                className={`${playfair.className} italic text-4xl font-normal text-[#1B3622] md:text-5xl`}
+                style={{ color: section.accentColor || "#1B3622" }}
               >
                 {section.number}
               </span>
+
               <h2
-                className="text-5xl font-serif italic font-normal tracking-tight"
-                style={{ color: section.accentColor }}
+                className={`${playfair.className} text-4xl font-normal italic text-[#1B3622] md:text-5xl`}
+                style={{ color: section.accentColor || "#1B3622" }}
               >
                 {isArabic ? section.titleAr : section.titleEn}
               </h2>
@@ -67,22 +81,24 @@ export default function MenuSection({ section, onSelectItem }: Props) {
                 <article
                   key={item.id}
                   onClick={() => onSelectItem(item, section)}
-                  className="border-b border-black/10 pb-6 cursor-pointer group hover:opacity-80 transition-opacity"
+                  className="cursor-pointer border-b border-black/10 pb-6 transition-opacity hover:opacity-80"
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div>
                       <h3
-                        className="text-2xl font-serif italic font-medium"
-                        style={{ color: section.accentColor }}
+                        className={`${playfair.className} text-xl font-normal italic text-gray-900 md:text-2xl`}
+                        style={{ color: section.accentColor || "#111827" }}
                       >
                         {isArabic ? item.titleAr : item.titleEn}
                       </h3>
 
-                      <p className="mt-1 text-sm text-black/70 max-w-md">
+                      <p
+                        className={`${inter.className} mt-1 max-w-md text-xs font-normal text-gray-600 md:text-sm`}
+                      >
                         {isArabic ? item.descriptionAr : item.descriptionEn}
                       </p>
 
-                      <div className="mt-4 flex gap-5 text-[11px] font-mono tracking-widest text-black/60 uppercase">
+                      <div className="mt-4 flex gap-5 font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500 md:text-xs">
                         <span>C {item.carbs}</span>
                         <span>P {item.protein}</span>
                         <span>F {item.fat}</span>
@@ -90,7 +106,7 @@ export default function MenuSection({ section, onSelectItem }: Props) {
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs font-mono tracking-wider text-black/70 uppercase">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500 md:text-xs">
                         {item.kcal} KCAL
                       </span>
                     </div>
@@ -98,9 +114,7 @@ export default function MenuSection({ section, onSelectItem }: Props) {
                 </article>
               ))}
             </div>
-
           </div>
-
         </div>
       </div>
     </section>
