@@ -20,22 +20,34 @@ export interface IngredientOrigin {
   isActive: boolean;
 }
 
-export async function getIngredientOrigins(): Promise<
-  IngredientOrigin[]
-> {
+export interface IngredientOriginsResponse {
+  items: IngredientOrigin[];
+  disclaimerEn: string;
+  disclaimerAr: string;
+}
+
+export async function getIngredientOrigins(): Promise<IngredientOriginsResponse> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  // 1. Fetch active ingredient origins
+  const { data: originsData, error: originsError } = await supabase
     .from("ingredient_origins")
     .select("*")
     .eq("is_active", true)
     .order("display_order");
 
-  if (error) {
-    throw error;
+  if (originsError) {
+    throw originsError;
   }
 
-  return data.map((item) => ({
+  // 2. Fetch global allergen disclaimer settings
+  const { data: settingsData } = await supabase
+    .from("menu_settings")
+    .select("allergen_disclaimer_en, allergen_disclaimer_ar")
+    .eq("id", 1)
+    .single();
+
+  const items = originsData.map((item) => ({
     id: item.id,
 
     titleEn: item.title_en,
@@ -54,4 +66,14 @@ export async function getIngredientOrigins(): Promise<
 
     isActive: item.is_active,
   }));
+
+  return {
+    items,
+    disclaimerEn:
+      settingsData?.allergen_disclaimer_en ??
+      "ALLERGEN INFORMATION IS AVAILABLE ON EACH ITEM PAGE.",
+    disclaimerAr:
+      settingsData?.allergen_disclaimer_ar ??
+      "معلومات المسببات للحساسية متوفرة في صفحة كل عنصر.",
+  };
 }

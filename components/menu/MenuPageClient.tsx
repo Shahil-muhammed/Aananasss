@@ -21,12 +21,16 @@ interface Props {
   hero: MenuHeroData;
   sections: MenuSectionData[];
   ingredientOrigins: IngredientOrigin[];
+  disclaimerEn?: string;
+  disclaimerAr?: string;
 }
 
 export default function MenuPageClient({
   hero,
   sections,
   ingredientOrigins,
+  disclaimerEn,
+  disclaimerAr,
 }: Props) {
   const [activeCategory, setActiveCategory] = useState("all");
 
@@ -85,6 +89,8 @@ export default function MenuPageClient({
 
       <IngredientOrigins
         items={ingredientOrigins}
+        disclaimerEn={disclaimerEn}
+        disclaimerAr={disclaimerAr}
       />
 
       <ItemModal

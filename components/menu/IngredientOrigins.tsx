@@ -5,14 +5,24 @@ import { IngredientOrigin } from "@/lib/menu/ingredientOrigins";
 
 interface Props {
   items: IngredientOrigin[];
+  disclaimerEn?: string;
+  disclaimerAr?: string;
 }
 
-export default function IngredientOrigins({ items }: Props) {
+export default function IngredientOrigins({
+  items,
+  disclaimerEn,
+  disclaimerAr,
+}: Props) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
+  const disclaimerText = isArabic
+    ? disclaimerAr || disclaimerEn
+    : disclaimerEn || disclaimerAr;
+
   return (
-    <section 
+    <section
       id="ingredient-origins"
       dir={isArabic ? "rtl" : "ltr"}
       className="muted-ground relative text-[#1E1D1B] py-14 px-6 sm:px-10 lg:px-16 overflow-hidden select-none"
@@ -21,7 +31,6 @@ export default function IngredientOrigins({ items }: Props) {
       }}
     >
       <div className="mx-auto max-w-7xl relative z-10">
-        
         {/* Category Tag */}
         <div className="mb-4">
           <span className="font-mono text-[10px] tracking-[0.25em] text-[#76746A] uppercase">
@@ -47,19 +56,26 @@ export default function IngredientOrigins({ items }: Props) {
         {/* Content Grid - 4 columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10 mb-14">
           {items.map((item) => {
-            const title = isArabic ? (item.titleAr || item.titleEn) : item.titleEn;
-            const subtitle = isArabic ? (item.subtitleAr || item.subtitleEn) : item.subtitleEn;
-            const origin = isArabic ? (item.originAr || item.originEn) : item.originEn;
-            const halal = isArabic ? (item.halalAr || item.halalEn) : item.halalEn;
+            const title = isArabic
+              ? item.titleAr || item.titleEn
+              : item.titleEn;
+            const subtitle = isArabic
+              ? item.subtitleAr || item.subtitleEn
+              : item.subtitleEn;
+            const origin = isArabic
+              ? item.originAr || item.originEn
+              : item.originEn;
+            const halal = isArabic
+              ? item.halalAr || item.halalEn
+              : item.halalEn;
 
             return (
               <div key={item.id} className="flex flex-col">
-                
                 {/* Category Title */}
                 <h3 className="font-serif italic text-2xl font-light text-[#191817] mb-1.5">
                   {title}
                 </h3>
-                
+
                 {/* Subtitle */}
                 <p className="font-sans text-xs text-[#5C5B53] font-normal leading-relaxed mb-6 min-h-[2.5rem]">
                   {subtitle}
@@ -88,19 +104,17 @@ export default function IngredientOrigins({ items }: Props) {
                     </p>
                   </div>
                 )}
-
               </div>
             );
           })}
         </div>
 
-        {/* Footer Note */}
-        <p className="font-mono text-[10px] tracking-[0.22em] text-[#76746A] uppercase">
-          {isArabic
-            ? "معلومات المسببات للحساسية متوفرة في صفحة كل عنصر."
-            : "ALLERGEN INFORMATION IS AVAILABLE ON EACH ITEM PAGE."}
-        </p>
-
+        {/* Dynamic Footer Note from Supabase */}
+        {disclaimerText && (
+          <p className="font-mono text-[7px] tracking-[0.22em] text-[#76746A] uppercase">
+            {disclaimerText}
+          </p>
+        )}
       </div>
     </section>
   );

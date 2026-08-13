@@ -529,3 +529,39 @@ export async function deleteAllergen(id: number) {
     throw error;
   }
 }
+
+
+// ============================================
+// MENU SETTINGS
+// ============================================
+
+import { revalidatePath } from "next/cache";
+
+export interface MenuSettingsFormData {
+  allergenDisclaimerEn: string;
+  allergenDisclaimerAr: string;
+}
+
+export async function updateMenuSettings(settings: MenuSettingsFormData) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("menu_settings")
+    .upsert({
+      id: 1,
+      allergen_disclaimer_en: settings.allergenDisclaimerEn,
+      allergen_disclaimer_ar: settings.allergenDisclaimerAr,
+      updated_at: new Date().toISOString(),
+    });
+
+  if (error) {
+    console.error("Error updating menu settings:", error);
+    return { success: false, error: error.message };
+  }
+
+  // Purge cache so public pages reflect updated disclaimers immediately
+  revalidatePath("/menu");
+  revalidatePath("/", "layout");
+
+  return { success: true };
+}

@@ -13,19 +13,18 @@ export default async function MenuPage() {
 
   const items = await getMenuItems();
 
-  const ingredientOrigins =
+  const { items: ingredientOrigins, disclaimerEn, disclaimerAr } =
     await getIngredientOrigins();
 
-  const sections = transformMenuSections(
-    categories,
-    items
-  );
+  const sections = transformMenuSections(categories, items);
 
   return (
     <MenuPageClient
       hero={hero}
       sections={sections}
       ingredientOrigins={ingredientOrigins}
+      disclaimerEn={disclaimerEn}
+      disclaimerAr={disclaimerAr}
     />
   );
 }
