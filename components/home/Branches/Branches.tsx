@@ -110,21 +110,10 @@ export default function Branches({ data }: BranchesProps) {
 
   return (
     <section 
-      className="relative overflow-hidden bg-[#F3ECD8] py-16 lg:py-24"
+      className="muted-ground relative overflow-hidden py-16 lg:py-24"
+      style={{ backgroundColor: "#F3ECD8" }}
       dir={isArabic ? "rtl" : "ltr"}
     >
-      {/* Structural Subtle Paper Grain Accent */}
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.03]
-          [background-image:radial-gradient(#000_0.7px,transparent_0.7px)]
-          [background-size:12px_12px]
-        "
-      />
-
       <div className="relative z-10 mx-auto max-w-[1600px] px-6 lg:px-12">
         
         {/* Header Block Split Container */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 
@@ -126,7 +127,6 @@ export default function Locations({ locations }: Props) {
   const renderFormattedText = (text?: string) => {
     if (!text) return null;
 
-    // Split string by <br>, <br/>, or <br /> case-insensitively
     const parts = text.split(/<br\s*\/?>/gi);
 
     return parts.map((part, index) => (
@@ -148,17 +148,8 @@ export default function Locations({ locations }: Props) {
   );
 
   return (
-    <section
-      className="bg-[#EFE7D6] py-10 md:py-20"
-      style={{
-        backgroundImage: `
-          linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px)
-        `,
-        backgroundSize: "8px 8px",
-      }}
-    >
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 space-y-4 md:space-y-6">
+    <section className="muted-ground relative bg-[#EFE7D6] py-10 md:py-20">
+      <div className="relative z-10 mx-auto max-w-7xl px-3 sm:px-6 space-y-4 md:space-y-6">
         {rows.map((row, rowIndex) => {
           const isSelectedInThisRow = row.some(
             (loc) => loc.id === selectedLocationId
@@ -166,7 +157,7 @@ export default function Locations({ locations }: Props) {
 
           return (
             <div key={rowIndex} className="space-y-4 md:space-y-6">
-              {/* Cards */}
+              {/* Cards Grid */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {row.map((location) => {
                   const isSelected = selectedLocationId === location.id;
@@ -180,14 +171,16 @@ export default function Locations({ locations }: Props) {
                         )
                       }
                       className={`group relative overflow-hidden text-left transition-all duration-200 ${
-                        isSelected ? "ring-2 ring-[#3B4823]" : ""
+                        isSelected ? "ring-2 ring-[#3D4723]" : ""
                       }`}
                     >
                       <div className="relative aspect-[4/5] w-full overflow-hidden">
-                        <img
+                        <Image
                           src={location.img}
-                          alt={location.name}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          alt={isArabic ? location.name_ar : location.name}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
@@ -205,7 +198,6 @@ export default function Locations({ locations }: Props) {
                               : location.name}
                           </h3>
 
-                          {/* Render hours with line breaks on cards */}
                           <div className="mt-0.5 text-[9px] sm:text-xs opacity-75 line-clamp-2 leading-tight">
                             {renderFormattedText(
                               isArabic ? location.hours_ar : location.hours
@@ -222,28 +214,34 @@ export default function Locations({ locations }: Props) {
               {isSelectedInThisRow && selectedLocation && (
                 <div
                   id={`location-details-${selectedLocation.id}`}
-                  className="relative bg-[#3B4823] p-5 text-white sm:p-8 md:p-10 shadow-2xl transition-all"
+                  className="muted-ground-dark relative bg-[#3D4723] p-5 text-white sm:p-8 md:p-10 shadow-2xl transition-all"
                 >
                   <button
                     onClick={() => setSelectedLocationId(null)}
-                    className="absolute top-3 right-3 sm:top-4 sm:right-4 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs text-white hover:bg-white/20 transition-colors"
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs text-white hover:bg-white/20 transition-colors"
                   >
                     ✕
                   </button>
 
-                  <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
+                  <div className="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center">
                     {/* Image */}
-                    <div className="overflow-hidden">
-                      <img
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                      <Image
                         src={selectedLocation.img}
-                        alt={selectedLocation.name}
-                        className="aspect-[4/3] w-full object-cover"
+                        alt={
+                          isArabic
+                            ? selectedLocation.name_ar
+                            : selectedLocation.name
+                        }
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
                       />
                     </div>
 
                     {/* Details */}
                     <div>
-                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-[#E4E47A]">
+                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-[#D8D17A]">
                         {isArabic
                           ? selectedLocation.tag.ar
                           : selectedLocation.tag.en}
@@ -257,7 +255,7 @@ export default function Locations({ locations }: Props) {
 
                       {/* Delivery Platforms & Features Sections */}
                       <div className="mt-4 space-y-3">
-                        {/* Section 1: Available On */}
+                        {/* Delivery Platforms */}
                         {selectedLocation.deliveryPlatforms &&
                           selectedLocation.deliveryPlatforms.length > 0 && (
                             <div>
@@ -288,7 +286,7 @@ export default function Locations({ locations }: Props) {
                             </div>
                           )}
 
-                        {/* Section 2: Features */}
+                        {/* Features */}
                         {selectedLocation.features &&
                           selectedLocation.features.length > 0 && (
                             <div>
@@ -370,7 +368,7 @@ export default function Locations({ locations }: Props) {
                           }
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-[#E4E47A] px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-white"
+                          className="inline-flex items-center gap-2 bg-[#D8D17A] px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#3D4723] transition-colors hover:bg-white hover:text-black"
                         >
                           {isArabic ? "خرائط جوجل" : "Google Maps"} →
                         </a>

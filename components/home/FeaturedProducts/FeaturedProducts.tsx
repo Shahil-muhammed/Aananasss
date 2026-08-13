@@ -17,26 +17,10 @@ export default function FeaturedProducts({ data }: Props) {
 
   return (
     <section
-      className="relative overflow-hidden bg-[#F3ECD8] py-12 sm:py-20 lg:py-32"
+      className="muted-ground relative overflow-hidden py-12 sm:py-20 lg:py-32"
+      style={{ backgroundColor: "#F3ECD8" }}
       dir={isArabic ? "rtl" : "ltr"}
     >
-      {/* IDENTICAL BACKGROUND MICRO-GRID */}
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.12]
-        "
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #000 0.5px, transparent 0.5px),
-            linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
-          `,
-          backgroundSize: "6px 6px",
-        }}
-      />
-
       <div className="relative z-10 mx-auto w-full max-w-[1900px] px-4 sm:px-8 lg:px-9">
         {/* Heading */}
         <motion.div

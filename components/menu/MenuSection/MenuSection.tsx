@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 type Props = {
-  section: MenuSectionData;
+  section: MenuSectionData & { isDark?: boolean };
   onSelectItem: (item: MenuItem, section: MenuSectionData) => void;
 };
 
@@ -26,26 +26,15 @@ export default function MenuSection({ section, onSelectItem }: Props) {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
+  // Rule of thumb: dark fills take muted-ground-dark, light/default takes muted-ground
+  const textureClass = section.isDark ? "muted-ground-dark" : "muted-ground";
+
   return (
     <section
       id={section.id}
       style={{ backgroundColor: section.backgroundColor || "#F7C5B8" }}
-      className="relative scroll-mt-24 overflow-hidden py-20 sm:scroll-mt-28"
+      className={`${textureClass} relative scroll-mt-24 overflow-hidden py-20 sm:scroll-mt-28`}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-25">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
-              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: "20px 20px",
-          }}
-        />
-      </div>
-
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid items-start gap-14 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
@@ -62,7 +51,7 @@ export default function MenuSection({ section, onSelectItem }: Props) {
           <div className="order-1 space-y-8 lg:order-2">
             <div className="flex items-baseline gap-4 border-b border-black/10 pb-6">
               <span
-                className={`${playfair.className} italic text-4xl font-normal text-[#1B3622] md:text-5xl`}
+                className={`${playfair.className} text-4xl font-normal italic text-[#1B3622] md:text-5xl`}
                 style={{ color: section.accentColor || "#1B3622" }}
               >
                 {section.number}

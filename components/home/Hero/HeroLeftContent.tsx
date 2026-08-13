@@ -13,44 +13,67 @@ export default function HeroLeftContent({
 }: HeroLeftContentProps) {
   const isArabic = locale === "ar";
 
-  // Left content is only for English.
-  // Arabic content will be rendered by HeroRightContent.
-  if (isArabic) return null;
+  const highContrastSerif =
+    'var(--font-playfair), "Instrument Serif", Georgia, serif';
 
   return (
-    <div className="relative mb-6 max-w-full lg:absolute lg:bottom-16 lg:left-14 lg:max-w-3xl">
+    <div
+      className={`relative z-30 max-w-full pb-1 lg:absolute lg:bottom-6 lg:pb-0 lg:max-w-[650px] ${
+        isArabic
+          ? "lg:right-6 xl:right-10 text-right"
+          : "lg:left-6 xl:left-10 text-left"
+      }`}
+    >
+      {/* Title Line 1 */}
       <h1
+        style={{
+          fontFamily: isArabic ? "inherit" : highContrastSerif,
+          fontStyle: isArabic ? "normal" : "italic",
+          fontWeight: 400,
+          letterSpacing: isArabic ? "0em" : "-0.015em",
+          lineHeight: 0.9,
+        }}
         className="
-          font-serif
-          italic
+          block
+          whitespace-normal
+          sm:whitespace-nowrap
           text-white
-          text-4xl
-          sm:text-5xl
-          md:text-6xl
-          lg:text-[90px]
-          leading-[0.95]
-          tracking-[-0.03em]
-          drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]
+          text-[1.35rem]
+          xs:text-[1.65rem]
+          sm:text-[2.2rem]
+          md:text-[2.9rem]
+          lg:text-[3.5rem]
+          xl:text-[4rem]
+          drop-shadow-md
         "
       >
-        {data.titleEn}
+        {isArabic ? data.titleAr : data.titleEn}
       </h1>
 
+      {/* Title Line 2 (Highlight) */}
       <h2
+        style={{
+          fontFamily: isArabic ? "inherit" : highContrastSerif,
+          fontStyle: isArabic ? "normal" : "italic",
+          fontWeight: 400,
+          letterSpacing: isArabic ? "0em" : "-0.015em",
+          lineHeight: 0.9,
+        }}
         className="
-          font-serif
-          italic
+          block
+          whitespace-normal
+          sm:whitespace-nowrap
           text-[#DCE56C]
-          text-4xl
-          sm:text-5xl
-          md:text-6xl
-          lg:text-[90px]
-          leading-[0.95]
-          tracking-[-0.03em]
-          drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]
+          text-[1.35rem]
+          xs:text-[1.65rem]
+          sm:text-[2.2rem]
+          md:text-[2.9rem]
+          lg:text-[3.5rem]
+          xl:text-[4rem]
+          drop-shadow-md
         "
       >
-        {data.titleHighlightEn}
+        {isArabic ? data.titleHighlightAr : data.titleHighlightEn}
       </h2>
     </div>
   );

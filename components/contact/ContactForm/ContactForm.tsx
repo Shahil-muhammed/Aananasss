@@ -154,19 +154,8 @@ export default function ContactForm({ contactTopics }: ContactFormProps) {
   };
 
   return (
-    <section className="relative w-full bg-[#EBE5CD] py-10 sm:py-16 md:py-20 text-[#292723]">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #000 1px, transparent 1px),
-            linear-gradient(to bottom, #000 1px, transparent 1px)
-          `,
-          backgroundSize: "4px 4px",
-        }}
-      />
-
-      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 md:px-8 w-full">
+    <section className="muted-ground relative w-full bg-[#EBE5CD] py-10 sm:py-16 md:py-20 text-[#292723]">
+      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 md:px-8 w-full z-10">
         {submitted ? (
           /* --- SUCCESS / WEBMAIL CHOICE SCREEN --- */
           <div className="py-12 text-center">
@@ -186,21 +175,21 @@ export default function ContactForm({ contactTopics }: ContactFormProps) {
                 onClick={() => openWebmail("gmail")}
                 className="rounded-[4px] bg-[#EA4335] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
               >
-                Open in Gmail
+                {isArabic ? "فتح في Gmail" : "Open in Gmail"}
               </button>
               <button
                 type="button"
                 onClick={() => openWebmail("outlook")}
                 className="rounded-[4px] bg-[#0078D4] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
               >
-                Open in Outlook Web
+                {isArabic ? "فتح في Outlook" : "Open in Outlook Web"}
               </button>
               <button
                 type="button"
                 onClick={() => openWebmail("yahoo")}
                 className="rounded-[4px] bg-[#6001D2] px-5 py-2.5 font-mono text-xs text-white uppercase tracking-wider hover:opacity-90"
               >
-                Open in Yahoo
+                {isArabic ? "فتح في Yahoo" : "Open in Yahoo"}
               </button>
             </div>
 
@@ -342,7 +331,7 @@ export default function ContactForm({ contactTopics }: ContactFormProps) {
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-[4px] bg-[#DF9943] px-6 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-[#ce8b38] active:scale-[0.99]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-[4px] bg-[#334121] px-6 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#E7F19E] transition hover:bg-[#1F2710] active:scale-[0.99]"
                 >
                   <span>{isArabic ? "إرسال الرسالة" : "SEND MESSAGE"}</span>
                   <span className="text-sm font-normal">→</span>
@@ -365,7 +354,7 @@ export default function ContactForm({ contactTopics }: ContactFormProps) {
 
               {/* Direct Webmail Links under main button */}
               <div className="flex items-center gap-2 pt-2 text-[11px] font-mono text-[#292723]/60">
-                <span>Or open in browser:</span>
+                <span>{isArabic ? "أو افتح في المتصفح:" : "Or open in browser:"}</span>
                 <button
                   type="button"
                   onClick={() => {

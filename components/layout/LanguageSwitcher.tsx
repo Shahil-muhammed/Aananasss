@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import PageLoader from "../ui/PageLoader";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
@@ -26,11 +27,7 @@ export default function LanguageSwitcher() {
 
   return (
     <>
-      {(loading || isPending) && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#F8F4EC]/80 backdrop-blur-sm">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#31451B] border-t-transparent" />
-        </div>
-      )}
+      {(loading || isPending) && <PageLoader />}
 
       <button
         onClick={toggleLanguage}

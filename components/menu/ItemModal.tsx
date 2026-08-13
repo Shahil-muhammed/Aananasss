@@ -7,7 +7,7 @@ import { MenuItem, MenuSectionData } from "./MenuSection/menuSection.types";
 
 type ItemModalProps = {
   item: MenuItem | null;
-  section: MenuSectionData | null;
+  section: (MenuSectionData & { isDark?: boolean }) | null;
   onClose: () => void;
 };
 
@@ -44,6 +44,9 @@ export default function ItemModal({
 
   if (!item || !section) return null;
 
+  // Rule of thumb from spec: dark fills take muted-ground-dark, light/default takes muted-ground
+  const textureClass = section.isDark ? "muted-ground-dark" : "muted-ground";
+
   const categoryLabel = (
     isArabic ? section.titleAr : section.titleEn
   ).toUpperCase();
@@ -58,7 +61,6 @@ export default function ItemModal({
     ? item.captionAr
     : item.captionEn;
 
-  // FIX: Read directly from item props; fallback only if undefined/null
   const itemOrigin = isArabic
     ? item.originAr ?? ""
     : item.originEn ?? "";
@@ -75,7 +77,7 @@ export default function ItemModal({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-5xl rounded-3xl p-6 sm:p-10 lg:p-14 shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] overflow-y-auto"
+        className={`${textureClass} relative w-full max-w-5xl rounded-3xl p-6 sm:p-10 lg:p-14 shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] overflow-y-auto`}
         style={{ backgroundColor: section.backgroundColor }}
         onClick={(e) => e.stopPropagation()}
         dir={isArabic ? "rtl" : "ltr"}

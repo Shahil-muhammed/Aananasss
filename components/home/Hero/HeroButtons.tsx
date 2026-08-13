@@ -15,24 +15,29 @@ export default function HeroButtons({
   const isArabic = locale === "ar";
 
   return (
-    <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:flex-row lg:justify-end lg:gap-3">
+    <div
+      className={`flex w-full flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center lg:w-auto ${
+        isArabic ? "justify-start lg:justify-start" : "justify-start lg:justify-end"
+      }`}
+    >
       {isArabic ? (
         <>
-          {data.secondaryButton.isVisible && (
-            <Link
-              href={data.secondaryButton.href}
-              className="w-full rounded-md border border-white/40 bg-transparent px-4 py-3 text-sm font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black sm:w-auto"
-            >
-              {data.secondaryButton.labelAr}
-            </Link>
-          )}
-
           {data.primaryButton.isVisible && (
             <Link
               href={data.primaryButton.href}
-              className="w-full rounded-md bg-[#D89A43] px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-90 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-1.5 rounded-sm bg-[#D89A43] px-4 py-2 text-[0.68rem] font-medium uppercase tracking-wider text-white transition-all duration-300 hover:bg-[#c48937] sm:w-auto"
             >
-              {data.primaryButton.labelAr}
+              <span>{data.primaryButton.labelAr}</span>
+              <span className="text-xs">←</span>
+            </Link>
+          )}
+
+          {data.secondaryButton.isVisible && (
+            <Link
+              href={data.secondaryButton.href}
+              className="inline-flex w-full items-center justify-center rounded-sm border border-white/30 bg-black/20 px-4 py-2 text-[0.68rem] font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black sm:w-auto"
+            >
+              {data.secondaryButton.labelAr}
             </Link>
           )}
         </>
@@ -41,16 +46,17 @@ export default function HeroButtons({
           {data.primaryButton.isVisible && (
             <Link
               href={data.primaryButton.href}
-              className="w-full rounded-md bg-[#D89A43] px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white transition-all duration-300 hover:opacity-90 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-1.5 rounded-sm bg-[#D89A43] px-4 py-2 text-[0.68rem] font-medium uppercase tracking-wider text-white transition-all duration-300 hover:bg-[#c48937] sm:w-auto"
             >
-              {data.primaryButton.labelEn}
+              <span>{data.primaryButton.labelEn}</span>
+              <span className="text-xs">→</span>
             </Link>
           )}
 
           {data.secondaryButton.isVisible && (
             <Link
               href={data.secondaryButton.href}
-              className="w-full rounded-md border border-white/40 bg-transparent px-4 py-3 text-sm font-medium uppercase tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-sm border border-white/30 bg-black/20 px-4 py-2 text-[0.68rem] font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black sm:w-auto"
             >
               {data.secondaryButton.labelEn}
             </Link>

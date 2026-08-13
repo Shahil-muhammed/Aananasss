@@ -15,31 +15,29 @@ export default function StorySection({
   const locale = useLocale();
   const isArabic = locale === "ar";
 
-  // Light vs Dark subtle grid overlay based on text color
-  const isDarkBg = section.titleColor === "#F8F4E9";
-  const gridColor = isDarkBg
-    ? "rgba(248, 244, 233, 0.05)"
-    : "rgba(0, 0, 0, 0.035)";
+  // Normalize color format for robust matching
+  const bgColor = section.backgroundColor?.toUpperCase();
+
+  // Determine whether to use dark (muted-ground-dark) or light (muted-ground) surface texture
+  const isDarkBg =
+    bgColor === "#1F1F1F" ||
+    bgColor === "#000000" ||
+    bgColor === "#1A1A1A" ||
+    bgColor === "#3D4723" || // Added Olive Green dark grounds
+    bgColor === "#3F4B26" ||
+    section.titleColor?.toUpperCase() === "#F8F4E9" ||
+    section.titleColor?.toUpperCase() === "#F7F3E8";
+
+  // Use muted-ground-dark for dark surfaces as specified in your globals.css
+  const surfaceTextureClass = isDarkBg ? "muted-ground-dark" : "muted-ground";
 
   return (
     <section
       style={{
         backgroundColor: section.backgroundColor,
       }}
-      className="relative overflow-hidden py-12 sm:py-16 md:py-28"
+      className={`${surfaceTextureClass} relative overflow-hidden py-12 sm:py-16 md:py-28`}
     >
-      {/* ================= BG GRID EFFECT ================= */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, ${gridColor} 1px, transparent 1px),
-            linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)
-          `,
-          backgroundSize: "24px 24px",
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
         <div
           className={`grid items-center gap-10 lg:gap-16 lg:grid-cols-2 ${
@@ -78,7 +76,7 @@ export default function StorySection({
               className="mb-3 sm:mb-6 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.35em]"
               style={{
                 color:
-                  section.titleColor === "#F8F4E9"
+                  section.titleColor === "#F8F4E9" || section.titleColor === "#F7F3E8"
                     ? "#F8F4E9CC"
                     : "#44444499",
               }}
@@ -103,7 +101,7 @@ export default function StorySection({
               className="mt-6 sm:mt-10 text-sm sm:text-base leading-7 sm:leading-9"
               style={{
                 color:
-                  section.titleColor === "#F8F4E9"
+                  section.titleColor === "#F8F4E9" || section.titleColor === "#F7F3E8"
                     ? "#F8F4E9"
                     : "#343434",
               }}

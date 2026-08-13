@@ -13,58 +13,50 @@ export default function HeroRightContent({
 }: HeroRightContentProps) {
   const isArabic = locale === "ar";
 
+  const highContrastSerif =
+    'var(--font-playfair), "Instrument Serif", Georgia, serif';
+
   if (isArabic) {
     return (
-      <div className="relative mb-6 max-w-full text-right lg:absolute lg:bottom-16 lg:right-14 lg:max-w-3xl">
-        <h1
+      <div className="w-full max-w-full text-right lg:max-w-[380px]">
+        <p
           className="
-            text-white
-            text-4xl
-            sm:text-5xl
-            md:text-6xl
-            lg:text-[88px]
-            font-bold
-            leading-[1]
-            drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]
+            text-right
+            text-sm
+            text-white/95
+            xs:text-base
+            sm:text-lg
+            lg:text-[1.25rem]
+            leading-snug
+            drop-shadow-md
           "
         >
-          {data.titleAr}
-        </h1>
-
-        <h2
-          className="
-            mt-2
-            text-[#DCE56C]
-            text-4xl
-            sm:text-5xl
-            md:text-6xl
-            lg:text-[88px]
-            font-bold
-            leading-[1]
-            drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]
-          "
-        >
-          {data.titleHighlightAr}
-        </h2>
+          {data.subtitleAr}
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="relative mb-6 max-w-full lg:absolute lg:bottom-28 lg:right-10 lg:max-w-sm">
+    <div className="w-full max-w-full lg:max-w-[360px]">
       <p
+        style={{
+          fontFamily: highContrastSerif,
+          fontStyle: "italic",
+          fontWeight: 400,
+          letterSpacing: "0.01em",
+          lineHeight: 1.2,
+        }}
         className="
-          font-serif
-          italic
           text-left
-          text-sm
-          leading-relaxed
+          text-xs
           text-white/95
+          xs:text-sm
           sm:text-base
           md:text-lg
           lg:text-right
-          lg:text-[24px]
-          drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]
+          lg:text-[1.25rem]
+          drop-shadow-md
         "
       >
         {data.subtitleEn}

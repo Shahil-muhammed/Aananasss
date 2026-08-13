@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap');
+
 @import "tailwindcss";
 
 @font-face {
@@ -37,4 +39,48 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ==========================================
+   ANANAS SURFACE TEXTURE SPECIFICATION
+   ========================================== */
+
+/* LIGHT GROUNDS */
+.muted-ground {
+  position: relative;
+  box-shadow: inset 0 0 240px rgba(31, 32, 33, 0.055); /* soft edge vignette */
+  isolation: isolate;                                /* REQUIRED — prevents grain escaping stacking context */
+}
+.muted-ground::after {
+  content: "";
+  position: absolute; 
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(rgba(31,32,33,.085) 1px, transparent 1px),
+    radial-gradient(rgba(31,32,33,.055) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+}
+
+/* DARK GROUNDS */
+.muted-ground-dark {
+  position: relative;
+  isolation: isolate;                                /* REQUIRED — prevents grain escaping stacking context */
+}
+.muted-ground-dark::after {
+  content: "";
+  position: absolute; 
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(rgba(253,250,242,.095) 1px, transparent 1px),
+    radial-gradient(rgba(253,250,242,.055) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 60% at center,
+      rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 70%);
+  background-size: 3px 3px, 7px 7px, 100% 100%;
+  background-position: 0 0, 1px 2px, center;
+  background-repeat: repeat, repeat, no-repeat;
 }

@@ -22,21 +22,10 @@ export default function MenuIntro({
 
   return (
     <section
-      className="relative overflow-hidden bg-[#435334] text-[#F8F4EC] py-12 lg:py-16"
+      className="muted-ground-dark relative overflow-hidden text-[#F8F4EC] py-12 lg:py-16"
+      style={{ backgroundColor: "#435334" }}
       dir={isArabic ? "rtl" : "ltr"}
     >
-      {/* BACKGROUND MICRO-GRID */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.15]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #000 0.5px, transparent 0.5px),
-            linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
-          `,
-          backgroundSize: "6px 6px",
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-[1500px] px-6 sm:px-8 lg:px-16">
         <div className="flex flex-col lg:grid lg:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:h-[75vh] lg:max-h-[700px] items-stretch gap-8">
 

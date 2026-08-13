@@ -10,21 +10,29 @@ interface Props {
 }
 
 export default function Hero({ data, locale }: Props) {
+  const isArabic = locale === "ar";
+
   return (
-    <section className="relative min-h-[680px] overflow-hidden sm:h-[calc(100vh-116px)] sm:min-h-[700px]">
+    <section className="relative min-h-[500px] overflow-hidden sm:min-h-[580px] lg:min-h-[680px]">
       <HeroBackground data={data} />
 
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
 
-      <div className="relative z-20 mx-auto flex h-full flex-col justify-between px-4 py-6 sm:px-6 sm:py-8 lg:px-14">
-        <div className="space-y-6 lg:space-y-0">
+      <div className="absolute inset-0 z-20 px-4 py-4 sm:px-8 sm:py-6 lg:px-12">
+        <div className="relative flex h-full w-full flex-col justify-end lg:block">
           <HeroLeftContent data={data} locale={locale} />
-          <HeroRightContent data={data} locale={locale} />
-        </div>
-      </div>
 
-      <div className="absolute inset-x-4 bottom-6 z-30 sm:bottom-8 lg:bottom-10">
-        <HeroButtons data={data} locale={locale} />
+          <div
+            className={`relative z-30 flex max-w-full flex-col gap-2.5 lg:absolute lg:bottom-6 ${
+              isArabic
+                ? "lg:left-6 xl:left-10 items-start lg:items-start"
+                : "lg:right-6 xl:right-10 items-start lg:items-end"
+            }`}
+          >
+            <HeroRightContent data={data} locale={locale} />
+            <HeroButtons data={data} locale={locale} />
+          </div>
+        </div>
       </div>
     </section>
   );

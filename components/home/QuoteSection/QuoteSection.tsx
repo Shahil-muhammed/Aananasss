@@ -15,26 +15,10 @@ export default function QuoteSection({ data }: Props) {
 
   return (
     <section
-      className="relative overflow-hidden bg-[#F3ECD8] py-16 lg:py-24"
+      className="muted-ground relative overflow-hidden py-16 lg:py-24"
+      style={{ backgroundColor: "#F3ECD8" }}
       dir={isArabic ? "rtl" : "ltr"}
     >
-      {/* IDENTICAL BACKGROUND MICRO-GRID */}
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.12]
-        "
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #000 0.5px, transparent 0.5px),
-            linear-gradient(to bottom, #000 0.5px, transparent 0.5px)
-          `,
-          backgroundSize: "6px 6px",
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-[1400px] px-8 lg:px-16">
         <div className="grid items-start gap-12 lg:grid-cols-[180px_1fr]">
 

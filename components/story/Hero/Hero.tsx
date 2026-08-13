@@ -44,7 +44,7 @@ export default function Hero({
   return (
     <section className="relative w-full overflow-hidden font-sans">
       {/* ================= HERO ================= */}
-      <div className="relative overflow-hidden bg-[#3F4B26] text-[#F8F3E7]">
+      <div className="rich-ground relative overflow-hidden bg-[#3F4B26] text-[#F8F3E7]">
 
         {/* Background Image */}
         <Image
@@ -75,12 +75,12 @@ export default function Hero({
                 : "text-center md:text-left"
             }`}
           >
-            {/* Heading - Reduced sizes across breakpoints */}
+            {/* Heading */}
             <h1 className="font-serif text-2xl italic leading-[1.12] tracking-tight text-[#F8F3E7] sm:text-4xl md:text-5xl lg:text-[72px] lg:leading-[1.05]">
               {isArabic ? hero.titleAr : hero.titleEn}
             </h1>
 
-            {/* Description - Compact text sizes */}
+            {/* Description */}
             <p className="mx-auto mt-3 max-w-lg text-xs leading-relaxed text-[#F8F3E7]/90 sm:mt-5 sm:text-sm md:mx-0 md:text-base md:leading-7">
               {isArabic
                 ? hero.subtitleAr
@@ -124,7 +124,7 @@ export default function Hero({
       </div>
 
       {/* ================= STATS ================= */}
-      <div className="bg-[#EBE5D8] px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14 lg:px-16">
+      <div className="muted-ground bg-[#EBE5D8] px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:text-left md:grid-cols-3 md:gap-10 rtl:sm:text-right">
             {hero.stats.map((stat) => (
