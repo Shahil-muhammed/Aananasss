@@ -13,13 +13,16 @@ export default function HeroRightContent({
 }: HeroRightContentProps) {
   const isArabic = locale === "ar";
 
-  const highContrastSerif =
-    'var(--font-playfair), "Instrument Serif", Georgia, serif';
-
   if (isArabic) {
     return (
       <div className="w-full max-w-full text-right lg:max-w-[380px]">
         <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontStyle: "normal",
+            lineHeight: 1.2,
+          }}
           className="
             text-right
             text-sm
@@ -41,7 +44,7 @@ export default function HeroRightContent({
     <div className="w-full max-w-full lg:max-w-[360px]">
       <p
         style={{
-          fontFamily: highContrastSerif,
+          fontFamily: "var(--font-serif)",
           fontStyle: "italic",
           fontWeight: 400,
           letterSpacing: "0.01em",

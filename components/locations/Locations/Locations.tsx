@@ -275,7 +275,7 @@ export default function Locations({ locations }: Props) {
                                     return (
                                       <span
                                         key={index}
-                                        className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                        className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
                                       >
                                         {text.replace("-", " ")}
                                       </span>
@@ -306,7 +306,7 @@ export default function Locations({ locations }: Props) {
                                     return (
                                       <span
                                         key={index}
-                                        className="border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
+                                        className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-white/90"
                                       >
                                         {text.replace("-", " ")}
                                       </span>

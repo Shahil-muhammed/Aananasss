@@ -4,15 +4,16 @@ import Image from "next/image";
 
 export default function PageLoader() {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#F8F4EC]/80 backdrop-blur-sm">
-      <div className="flex items-center justify-center">
-        <div className="h-12 w-12 animate-pulse">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#3B4519]">
+      <div className="flex items-center justify-center rounded-full bg-[#3B4519] p-4">
+        <div className="h-32 w-32 animate-pulse md:h-36 md:w-36">
           <Image
-            src="/icons/pineapple-marker.png"
+            src="/icons/ananas_pineapple.png"
             alt="loading"
-            width={48}
-            height={48}
+            width={144}
+            height={144}
             priority
+            className="h-full w-full object-contain"
           />
         </div>
       </div>

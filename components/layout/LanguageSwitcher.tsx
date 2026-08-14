@@ -32,12 +32,12 @@ export default function LanguageSwitcher() {
       <button
         onClick={toggleLanguage}
         disabled={loading || isPending}
-        className="flex h-10 w-20 items-center rounded-full border border-gray-300 bg-[#EFE4D0] p-1 transition-all hover:border-black disabled:opacity-70"
+        className="flex h-8 w-[74px] items-center overflow-hidden rounded-full border border-[#31451B] bg-[#EFE4D0] p-0.5 transition-all disabled:opacity-70"
       >
         <span
-          className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-all ${
+          className={`flex h-full w-1/2 items-center justify-center rounded-full text-[8px] font-medium uppercase tracking-[0.24em] transition-all ${
             locale === "en"
-              ? "bg-[#31451B] text-white"
+              ? "bg-[#31451B] text-[#D8D17A]"
               : "text-[#31451B]"
           }`}
         >
@@ -45,9 +45,9 @@ export default function LanguageSwitcher() {
         </span>
 
         <span
-          className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-all ${
+          className={`flex h-full w-1/2 items-center justify-center rounded-full text-[8px] font-medium uppercase tracking-[0.24em] transition-all ${
             locale === "ar"
-              ? "bg-[#31451B] text-white"
+              ? "bg-[#31451B] text-[#D8D17A]"
               : "text-[#31451B]"
           }`}
         >

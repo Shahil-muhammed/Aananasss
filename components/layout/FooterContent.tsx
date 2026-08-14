@@ -19,7 +19,7 @@ export default function FooterContent() {
             <h2
               className="leading-[0.88] tracking-[-0.04em]"
               style={{
-                fontFamily: '"Instrument Serif", serif',
+                fontFamily: "var(--font-serif)",
                 fontSize: "clamp(42px,6vw,88px)",
               }}
             >

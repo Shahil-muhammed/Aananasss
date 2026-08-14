@@ -14,7 +14,7 @@ export default function MobileNavbar() {
   const locale = useLocale();
   const t = useTranslations("Navbar");
   const brandName = locale === "ar" ? t("brand") : "Ananas";
-  const logoSrc = locale === "ar" ? "/icons/newarabiclogo.png" : "/icons/wordmark-green.png";
+  const logoSrc = locale === "ar" ? "/icons/ananas_arabic.png" : "/icons/ananas_english.png";
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

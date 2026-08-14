@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400&family=El+Messiri:wght@400&family=IBM+Plex+Sans+Arabic:wght@400&family=JetBrains+Mono:wght@400&family=Kawkab+Mono:wght@400&family=Manrope:wght@400&display=swap');
 
 @import "tailwindcss";
 
@@ -19,13 +19,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-sans: "Manrope", "Segoe UI", sans-serif;
+  --font-sans-ar: "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-serif-ar: "El Messiri", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+  --font-mono-ar: "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
+  --font-typewriter: "JetBrains Mono", "SFMono-Regular", monospace;
+  --font-typewriter-ar: "Kawkab Mono", monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,10 +44,48 @@
   }
 }
 
+[dir="rtl"] {
+  --font-sans: var(--font-sans-ar);
+  --font-serif: var(--font-serif-ar);
+  --font-mono: var(--font-mono-ar);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.serif,
+.font-serif,
+.vogue-hero-head {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+}
+
+[dir="rtl"] .serif,
+[dir="rtl"] .font-serif,
+[dir="rtl"] .vogue-hero-head {
+  font-family: var(--font-serif-ar);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.mono,
+.font-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-style: normal;
+}
+
+[dir="rtl"] .mono,
+[dir="rtl"] .font-mono {
+  font-family: var(--font-mono-ar);
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* ==========================================
